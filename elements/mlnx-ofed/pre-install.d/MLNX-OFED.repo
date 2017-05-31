@@ -1,0 +1,7 @@
+[MLNX-OFED-4.0-2]
+name=MLNX-OFED-4.0-2
+type=rpm-md
+baseurl=http://10.41.253.100:4120/MLNX_OFED_LINUX-4.0-2.0.0.1-rhel7.3-x86_64/RPMS
+gpgcheck=1
+gpgkey=http://10.41.253.100:4120/MLNX_OFED_LINUX-4.0-2.0.0.1-rhel7.3-x86_64/RPM-GPG-KEY-Mellanox
+enabled=1

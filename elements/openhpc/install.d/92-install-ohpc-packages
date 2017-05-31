@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+yum groupinstall -y ohpc-base-compute \
+    ohpc-slurm-client \
+    "InfiniBand Support"
+
+yum install -y lmod-ohpc mrsh-ohpc \
+    lustre-client-ohpc ntp

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Default to eno1
+NETIF=${DIB_DHCP_ON_DEV:-eno1}
+
+if [ ! -d /etc/sysconfig/network-scripts ]
+then
+    return -1
+fi
+
+# If there is no existing network configuration for the given device, 
+# create a catch-all DHCP configuration for this network interface.
+if [ ! -e /etc/sysconfig/network-scripts/ifcfg-$NETIF ]
+then
+    cat > /etc/sysconfig/network-scripts/ifcfg-$NETIF << EOF
+DEVICE="$NETIF"
+BOOTPROTO="dhcp"
+ONBOOT="yes"
+TYPE="Ethernet"
+EOF
+fi

@@ -17,3 +17,5 @@ Elements
 This repository provides the following DIB elements:
 
 * ``docker-ce``: Installs Docker CE (Community Edition) for RPM-based distros.
+* ``magnum-swarm``: Installs dependencies necessary for running Docker Swarm
+  clusters on OpenStack Magnum.

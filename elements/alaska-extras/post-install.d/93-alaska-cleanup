@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -e
+set -o pipefail
+
+if [ "$DIB_ALASKA_DELETE_REPO" = "y" -o "$DIB_ALASKA_DELETE_REPO" = "Y" ]
+then
+    rm -f /etc/yum.repos.d/ALaSKA-Extras.repo
+fi

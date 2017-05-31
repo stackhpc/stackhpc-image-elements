@@ -10,3 +10,10 @@ and cloud computing environments.
 * Source: https://github.com/stackhpc/stackhpc-image-elements
 * Bugs: https://github.com/stackhpc/stackhpc-image-elements/issues
 * License: Apache 2.0
+
+Elements
+========
+
+This repository provides the following DIB elements:
+
+* ``docker-ce``: Installs Docker CE (Community Edition) for RPM-based distros.

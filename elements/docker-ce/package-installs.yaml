@@ -1,0 +1,6 @@
+curl:
+  phase: pre-install.d
+docker-ce:
+python2:
+yum-utils:
+  phase: pre-install.d

@@ -1,0 +1,2 @@
+export DIB_DOCKER_REPO_URL="${DIB_DOCKER_REPO_URL:-https://download.docker.com/linux/${DISTRO_NAME}/docker-ce.repo}"
+export DIB_DOCKER_ENABLED_REPOS="${DIB_DOCKER_ENABLED_REPOS:-}"

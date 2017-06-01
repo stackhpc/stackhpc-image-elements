@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Purge the cloud image default network configuration
+if [ "$DHCP_ON_DEV" != "eth0" ]
+then
+    [ -f /etc/sysconfig/network-scripts/ifcfg-eth0 ] && rm -f /etc/sysconfig/network-scripts/ifcfg-eth0
+fi

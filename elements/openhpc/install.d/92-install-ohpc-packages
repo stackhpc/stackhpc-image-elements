@@ -6,8 +6,5 @@ fi
 set -eu
 set -o pipefail
 
-OPENHPC_GRPLIST=${DIB_OPENHPC_GRPLIST:-"ohpc-base-compute ohpc-slurm-client 'InfiniBand Support'"}
-OPENHPC_PKGLIST=${DIB_OPENHPC_PKGLIST:-"lmod-ohpc mrsh-ohpc lustre-client-ohpc"}
-
 [ ! -z "$OPENHPC_GRPLIST" ] && yum groupinstall -y $OPENHPC_GRPLIST
 [ ! -z "$OPENHPC_PKGLIST" ] && yum install -y $OPENHPC_PKGLIST

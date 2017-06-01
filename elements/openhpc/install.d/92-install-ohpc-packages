@@ -1,14 +1,13 @@
 #!/bin/bash
 
-if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
     set -x
 fi
 set -eu
 set -o pipefail
 
-yum groupinstall -y ohpc-base-compute \
-    ohpc-slurm-client \
-    "InfiniBand Support"
+OPENHPC_GRPLIST=${DIB_OPENHPC_GRPLIST:-"ohpc-base-compute ohpc-slurm-client 'InfiniBand Support'"}
+OPENHPC_PKGLIST=${DIB_OPENHPC_PKGLIST:-"lmod-ohpc mrsh-ohpc lustre-client-ohpc"}
 
-yum install -y lmod-ohpc mrsh-ohpc \
-    lustre-client-ohpc ntp
+[ ! -z "$OPENHPC_GRPLIST" ] && yum groupinstall -y $OPENHPC_GRPLIST
+[ ! -z "$OPENHPC_PKGLIST" ] && yum install -y $OPENHPC_PKGLIST

@@ -1,12 +1,12 @@
 #!/bin/bash
 
-if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
     set -x
 fi
 set -e
 set -o pipefail
 
-if [ "$DIB_OPENHPC_DELETE_REPO" = "y" -o "$DIB_OPENHPC_DELETE_REPO" = "Y" ]
+if [ "$OPENHPC_DELETE_REPO" = "y" -o "$OPENHPC_DELETE_REPO" = "Y" ]
 then
     rm -f /etc/yum.repos.d/OpenHPC.repo
 fi

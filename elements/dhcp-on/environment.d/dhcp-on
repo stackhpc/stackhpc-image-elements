@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Default to eno1
+DHCP_ON_DEV=${DIB_DHCP_ON_DEV:-eno1}

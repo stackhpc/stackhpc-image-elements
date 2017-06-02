@@ -1,13 +1,12 @@
 #!/bin/bash
 
-if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
     set -x
 fi
 set -e
 set -o pipefail
 
-if [ "$DIB_MLNX_OFED_DELETE_REPO" = "y" -o "$DIB_MLNX_OFED_DELETE_REPO" = "Y" ]
+if [ "$MLNX_OFED_DELETE_REPO" = "y" -o "$MLNX_OFED_DELETE_REPO" = "Y" ]
 then
     rm -f /etc/yum.repos.d/MLNX-OFED.repo
 fi
-systemctl enable ntpd.service

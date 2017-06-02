@@ -1,0 +1,6 @@
+#!/bin/bash
+
+MLNX_OFED_REPO=${DIB_MLNX_OFED_REPO:?"A repo URL for Mellanox OFED packages is requred"}
+MLNX_OFED_VERSION=${DIB_MLNX_OFED_VERSION:?"A revision of OFED is required"}
+MLNX_OFED_PKGLIST=${DIB_MLNX_OFED_PKGLIST:-"mlnx-ofed-hpc mlnx-fw-updater"}
+MLNX_OFED_DELETE_REPO=${DIB_MLNX_OFED_DELETE_REPO:-y}

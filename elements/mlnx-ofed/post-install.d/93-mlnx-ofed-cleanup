@@ -6,6 +6,9 @@ fi
 set -e
 set -o pipefail
 
+# Enable the Mellanox Software Tools service
+rpm -q mft && systemctl enable mst
+
 if [ "$MLNX_OFED_DELETE_REPO" = "y" -o "$MLNX_OFED_DELETE_REPO" = "Y" ]
 then
     rm -f /etc/yum.repos.d/MLNX-OFED.repo

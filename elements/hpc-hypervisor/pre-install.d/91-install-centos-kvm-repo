@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+[ -d /etc/yum.repos.d ] || exit -1
+
+workspace=$(dirname $0)
+
+cp $workspace/CentOS-KVM.repo /etc/yum.repos.d

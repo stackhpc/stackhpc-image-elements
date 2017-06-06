@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# Enable kernel boot parameters for an SR-IOV enabled hypervisor:
+echo 'GRUB_CMDLINE_LINUX=${GRUB_CMDLINE_LINUX} intel_iommu=on iommu=pt' >> /etc/default/grub

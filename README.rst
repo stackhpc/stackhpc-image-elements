@@ -19,3 +19,6 @@ This repository provides the following DIB elements:
 * ``docker-ce``: Installs Docker CE (Community Edition) for RPM-based distros.
 * ``magnum-swarm``: Installs dependencies necessary for running Docker Swarm
   clusters on OpenStack Magnum.
+* ``openhpc``: Installs an OpenHPC repo and core packages.
+* ``mlnx-ofed``: Installs a Mellanox OFED repo and a configurable set of core packages.
+* ``dhcp-on``: Configures network for DHCP only on a single, configurable interface name.

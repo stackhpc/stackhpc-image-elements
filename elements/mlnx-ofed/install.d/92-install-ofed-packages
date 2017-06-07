@@ -7,3 +7,6 @@ set -eu
 set -o pipefail
 
 yum install -y $MLNX_OFED_PKGLIST
+
+# Enable the Mellanox Software Tools service
+rpm -q mft && systemctl enable mst || true

@@ -7,4 +7,4 @@ set -eu
 set -o pipefail
 
 # Enable kernel boot parameters for an SR-IOV enabled hypervisor:
-echo 'GRUB_CMDLINE_LINUX=${GRUB_CMDLINE_LINUX} intel_iommu=on iommu=pt' >> /etc/default/grub
+echo 'GRUB_CMDLINE_LINUX="${GRUB_CMDLINE_LINUX} intel_iommu=on iommu=pt"' >> /etc/default/grub

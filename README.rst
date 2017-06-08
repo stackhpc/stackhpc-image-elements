@@ -21,4 +21,6 @@ This repository provides the following DIB elements:
   clusters on OpenStack Magnum.
 * ``openhpc``: Installs an OpenHPC repo and core packages.
 * ``mlnx-ofed``: Installs a Mellanox OFED repo and a configurable set of core packages.
+* ``sriov-hypervisor``: Prepare a hypervisor with networking preparation for SR-IOV support.
+* ``hpc-hypervisor``: Kernel and package optimisations for hypervisor virt optimisations.
 * ``dhcp-on``: Configures network for DHCP only on a single, configurable interface name.

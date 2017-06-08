@@ -1,0 +1,7 @@
+[CentOS-KVM]
+name=CentOS-KVM
+type=rpm-md
+baseurl=http://mirror.centos.org/centos/7/virt/x86_64/kvm-common
+gpgcheck=0
+#gpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-7
+enabled=1

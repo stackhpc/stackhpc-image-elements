@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# Enable kernel boot parameters for HPC hypervisor optimisations:
+
+# CPU power profile:        intel_idle.max_cstate=0 processor.max_cstate=1
+echo 'GRUB_CMDLINE_LINUX="${GRUB_CMDLINE_LINUX} intel_idle.max_cstate=0 processor.max_cstate=1"' >> /etc/default/grub
+
+# Hypervisor CPU isolation: isolcpus=${ISOLCPUS}
+echo "GRUB_CMDLINE_LINUX=\"\${GRUB_CMDLINE_LINUX} isolcpus=${HPC_HYPERVISOR_ISOLCPUS}\"" >> /etc/default/grub

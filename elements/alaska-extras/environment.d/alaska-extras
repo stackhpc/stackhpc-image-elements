@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export ALASKA_REPO=${DIB_ALASKA_REPO:?"A repo URL for ALaSKA-Extras packages is requred"}
+export ALASKA_PKGLIST=${DIB_ALASKA_PKGLIST:-""}
+export ALASKA_DELETE_REPO=${DIB_ALASKA_DELETE_REPO:-n}

@@ -6,7 +6,7 @@ fi
 set -eu
 set -o pipefail
 
-if [ ! -z "$DIB_ALASKA_PKGLIST" ]
+if [ ! -z "$ALASKA_PKGLIST" ]
 then
-    yum install -y ${DIB_ALASKA_PKGLIST}
+    yum install -y ${ALASKA_PKGLIST}
 fi

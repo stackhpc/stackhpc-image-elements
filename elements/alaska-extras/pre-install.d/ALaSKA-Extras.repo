@@ -1,6 +1,0 @@
-[ALaSKA-Extras]
-name=ALaSKA-Extras
-type=rpm-md
-baseurl=http://10.41.253.100:4120/ALaSKA-Extras/RPMS
-gpgcheck=0
-enabled=1

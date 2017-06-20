@@ -6,7 +6,13 @@ fi
 set -eu
 set -o pipefail
 
-workspace=$(dirname $0)
-
 [ -d /etc/yum.repos.d ] || exit -1
-cp -n $workspace/ALaSKA-Extras.repo /etc/yum.repos.d/
+
+cat > /etc/yum.repos.d/ALaSKA-Extras.repo << EOF
+[ALaSKA-Extras]
+name=ALaSKA-Extras
+type=rpm-md
+baseurl=$ALASKA_REPO
+gpgcheck=0
+enabled=1
+EOF

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+if [ -x "$ANACONDA_INSTALLER_LOCAL" ]
+then
+    bash $ANACONDA_INSTALLER_LOCAL -b -f -p $ANACONDA_ROOT || exit -1
+fi
+
+# Update the system shell profile to accommodate the Anaconda installation
+cat > /etc/profile.d/anaconda.sh << EOF
+# Anaconda installation root
+ANACONDA_ROOT=$ANACONDA_ROOT
+
+# Anaconda system paths
+export PATH=\$ANACONDA_ROOT/bin:\$PATH
+export MANPATH=\$ANACONDA_ROOT/share/man:\$MANPATH
+export LD_LIBRARY_PATH=\$ANACONDA_ROOT/lib:\$LD_LIBRARY_PATH
+
+# Python paths
+export PYTHONHOME=\$ANACONDA_ROOT
+EOF

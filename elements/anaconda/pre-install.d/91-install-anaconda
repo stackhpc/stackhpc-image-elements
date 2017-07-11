@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+curl -o ${ANACONDA_INSTALLER_LOCAL} ${ANACONDA_INSTALLER_URL} && chmod 0755 ${ANACONDA_INSTALLER_LOCAL}

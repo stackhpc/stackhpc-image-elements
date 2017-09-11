@@ -1,0 +1,13 @@
+biosdevname:
+ethtool:
+fio:
+hdparm:
+# FIXME: this causes a traceback when enabled with hardware-0.18.
+#infiniband-diags:
+ipmitool:
+lldpad:
+lshw:
+pciutils:
+sdparm:
+smartmontools:
+sysbench:

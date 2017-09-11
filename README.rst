@@ -24,3 +24,5 @@ This repository provides the following DIB elements:
 * ``sriov-hypervisor``: Prepare a hypervisor with networking preparation for SR-IOV support.
 * ``hpc-hypervisor``: Kernel and package optimisations for hypervisor virt optimisations.
 * ``dhcp-on``: Configures network for DHCP only on a single, configurable interface name.
+* ``ipa-extra-hardware``: Installs tools for enhanced hardware inspection in an
+  Ironic Python Agent (IPA) ramdisk image.

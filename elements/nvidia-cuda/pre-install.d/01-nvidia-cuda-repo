@@ -1,0 +1,21 @@
+#!/bin/bash -lv
+
+case "$DISTRO_NAME" in
+    centos* | rhel*)
+	yum install -y https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-repo-rhel7-8.0.61-1.x86_64.rpm
+	;;
+    fedora*)
+	dnf install -y https://developer.download.nvidia.com/compute/cuda/repos/fedora25/x86_64/cuda-repo-rhel7-8.0.61-1.x86_64.rpm
+	;;
+    ubuntu* | debian*)
+	wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_8.0.61-1_amd64.deb
+	dpkg -i cuda-repo-ubuntu1604_8.0.61-1_amd64.deb
+	apt-get update
+	;;
+    *)
+	echo "Distro \"$DISTRO_NAME\" is not recognised"
+	exit -1
+	;;
+esac
+
+exit 0

@@ -1,4 +1,23 @@
 #!/bin/bash
 
+case "$DISTRO_NAME" in
+    centos* | rhel*)
+	NVIDIA_CUDA_DISTRO="rhel7"
+	;;
+    fedora*)
+	NVIDIA_CUDA_DISTRO="fedora25"
+	;;
+    ubuntu* | debian*)
+	NVIDIA_CUDA_DISTRO="ubuntu1604"
+	;;
+    *)
+	echo "Distro \"$DISTRO_NAME\" is not recognised"
+	exit -1
+	;;
+esac
+
+export NVIDIA_CUDA_DISTRO
+export NVIDIA_CUDA_REPO=${DIB_NVIDIA_CUDA_REPO:-"https://developer.download.nvidia.com/compute/cuda/repos/${NVIDIA_CUDA_DISTRO}/x86_64"}
+export NVIDIA_CUDA_VERSION=${DIB_NVIDIA_CUDA_VERSION:-"9.0.176-1"}
 export NVIDIA_CUDA_PKGLIST=${DIB_NVIDIA_CUDA_PKGLIST:-"cuda"}
 export NVIDIA_CUDA_DELETE_REPO=${DIB_NVIDIA_CUDA_DELETE_REPO:-y}

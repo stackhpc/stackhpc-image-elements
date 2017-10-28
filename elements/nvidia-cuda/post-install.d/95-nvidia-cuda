@@ -1,0 +1,19 @@
+#!/bin/bash -lv
+
+if [ "$NVIDIA_CUDA_DELETE_REPO" = "y" -o "$NVIDIA_CUDA_DELETE_REPO" = "Y" ]
+then
+    case "$DISTRO_NAME" in
+	centos* | rhel* | fedora*)
+	    rpm -e cuda-repo-${NVIDIA_CUDA_DISTRO}-${NVIDIA_CUDA_VERSION}.x86_64
+	    ;;
+	ubuntu* | debian*)
+	    add-apt-repository -r cuda
+	    ;;
+	*)
+	    echo "Distro \"$DISTRO_NAME\" is not recognised"
+	    exit -1
+	    ;;
+    esac
+fi
+
+exit 0

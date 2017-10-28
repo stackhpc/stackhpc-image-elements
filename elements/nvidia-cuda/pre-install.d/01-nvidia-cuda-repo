@@ -1,0 +1,21 @@
+#!/bin/bash -lv
+
+case "$DISTRO_NAME" in
+    centos* | rhel*)
+	yum install -y ${NVIDIA_CUDA_REPO}/cuda-repo-${NVIDIA_CUDA_DISTRO}-${NVIDIA_CUDA_VERSION}.x86_64.rpm
+	;;
+    fedora*)
+	dnf install -y ${NVIDIA_CUDA_REPO}/cuda-repo-${NVIDIA_CUDA_DISTRO}-${NVIDIA_CUDA_VERSION}.x86_64.rpm
+	;;
+    ubuntu* | debian*)
+	wget ${NVIDIA_CUDA_REPO}/cuda-repo-${NVIDIA_CUDA_DISTRO}_${NVIDIA_CUDA_VERSION}_amd64.deb
+	dpkg -i cuda-repo-${NVIDIA_CUDA_DISTRO}_${NVIDIA_CUDA_VERSION}_amd64.deb
+	apt-get update
+	;;
+    *)
+	echo "Distro \"$DISTRO_NAME\" is not recognised"
+	exit -1
+	;;
+esac
+
+exit 0

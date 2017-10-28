@@ -1,0 +1,19 @@
+#!/bin/bash -lv
+
+case "$DISTRO_NAME" in
+    centos* | rhel*)
+	yum install -y $NVIDIA_CUDA_PKGLIST
+	;;
+    fedora*)
+	dnf install -y $NVIDIA_CUDA_PKGLIST
+	;;
+    ubuntu* | debian*)
+	apt-get -y install $NVIDIA_CUDA_PKGLIST
+	;;
+    *)
+	echo "Distro \"$DISTRO_NAME\" is not recognised"
+	exit -1
+	;;
+esac
+
+exit 0

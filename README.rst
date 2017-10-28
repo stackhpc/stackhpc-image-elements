@@ -26,3 +26,4 @@ This repository provides the following DIB elements:
 * ``dhcp-on``: Configures network for DHCP only on a single, configurable interface name.
 * ``ipa-extra-hardware``: Installs tools for enhanced hardware inspection in an
   Ironic Python Agent (IPA) ramdisk image.
+* ``nvidia-cuda``: Installs Nvidia CUDA repo and packages for GPU support.

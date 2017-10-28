@@ -3,11 +3,8 @@
 if [ "$NVIDIA_CUDA_DELETE_REPO" = "y" -o "$NVIDIA_CUDA_DELETE_REPO" = "Y" ]
 then
     case "$DISTRO_NAME" in
-	centos* | rhel*)
-	    rpm -e cuda-repo-rhel7-${NVIDIA_CUDA_VERSION}.x86_64
-	    ;;
-	fedora*)
-	    rpm -e cuda-repo-fedora25-${NVIDIA_CUDA_VERSION}.x86_64
+	centos* | rhel* | fedora*)
+	    rpm -e cuda-repo-${NVIDIA_CUDA_DISTRO}-${NVIDIA_CUDA_VERSION}.x86_64
 	    ;;
 	ubuntu* | debian*)
 	    add-apt-repository -r cuda

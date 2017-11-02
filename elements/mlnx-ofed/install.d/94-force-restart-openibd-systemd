@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+#Fix for infiniband modules being rebuilt by DKMS
+sed -e 's/ start / force-start /' -e 's/ restart / force-restart /' /lib/systemd/system/openibd.service > /etc/systemd/system/openibd.service
+systemctl daemon-reload
+

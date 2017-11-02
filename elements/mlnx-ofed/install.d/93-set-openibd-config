@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+if ! grep 'IPOIB_LOAD=yes' /etc/infiniband/openib.conf ; then
+    echo "# Load UMAD module
+UMAD_LOAD=yes
+# Load UVERBS module
+UVERBS_LOAD=yes
+# Load UCM module
+UCM_LOAD=yes
+# Load RDMA_CM module
+RDMA_CM_LOAD=yes
+# Load RDMA_UCM module
+RDMA_UCM_LOAD=yes
+# Load MLX4 modules
+MLX4_LOAD=yes
+# Load MLX4_EN module
+MLX4_EN_LOAD=yes
+# Load MLX5 modules
+MLX5_LOAD=yes
+# Load IPoIB
+IPOIB_LOAD=yes
+# Enable IPoIB Connected Mode
+SET_IPOIB_CM=auto
+" >> /etc/infiniband/openibd.conf
+fi
+

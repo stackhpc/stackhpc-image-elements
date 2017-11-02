@@ -6,7 +6,17 @@ fi
 set -eu
 set -o pipefail
 
+if [ -d /etc/yum.repos.d ] ; then
 yum install -y $MLNX_OFED_PKGLIST
-
 # Enable the Mellanox Software Tools service
 rpm -q mft && systemctl enable mst || true
+fi
+
+if [ -d /etc/apt/sources.list.d ] ; then
+apt-get update
+apt-get -y install linux-headers-generic
+apt-get -y install $MLNX_OFED_PKGLIST
+# Enable the Mellanox Software Tools service
+apt-get -y install mft && systemctl enable mst || true
+fi
+

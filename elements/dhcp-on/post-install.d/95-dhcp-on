@@ -4,4 +4,5 @@
 if [ "$DHCP_ON_DEV" != "eth0" ]
 then
     [ -f /etc/sysconfig/network-scripts/ifcfg-eth0 ] && rm -f /etc/sysconfig/network-scripts/ifcfg-eth0
+    [ -f /etc/network/interfaces.d/eth0.cfg ] && rm -f /etc/network/interfaces.d/eth0.cfg
 fi

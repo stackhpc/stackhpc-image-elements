@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -d /etc/sysconfig/network-scripts ]; then
-for $INF in $DHCP_ON_DEV;do
+for INF in $DHCP_ON_DEV;do
 # If there is no existing network configuration for the given device, 
 # create a catch-all DHCP configuration for this network interface.
 if [ ! -e /etc/sysconfig/network-scripts/ifcfg-$INF ]
@@ -17,7 +17,7 @@ done
 fi
 
 if [ -d /etc/network/interfaces.d ]; then
-for $INF in $DHCP_ON_DEV;do
+for INF in $DHCP_ON_DEV;do
 # If there is no existing network configuration for the given device, 
 # create a catch-all DHCP configuration for this network interface.
 if [ ! -e /etc/network/interfaces.d/$INF.cfg ]

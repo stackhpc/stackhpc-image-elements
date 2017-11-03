@@ -6,10 +6,11 @@ fi
 set -eu
 set -o pipefail
 
+KEEP=""
 # Purge the cloud image default network configuration
 for INF in ${DHCP_ON_DEV}; do
 	if [ "$INF" == "eth0" ];then
-		KEEP=1
+		KEEP="1"
 	fi
 done
 if [ "$KEEP" != "1" ]

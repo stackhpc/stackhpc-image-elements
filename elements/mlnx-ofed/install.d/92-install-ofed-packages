@@ -14,7 +14,7 @@ fi
 
 if [ -d /etc/apt/sources.list.d ] ; then
 apt-get update
-apt-get -y install linux-headers-generic
+apt-get -y install linux-headers-generic libc-dev
 apt-get -y install $MLNX_OFED_PKGLIST
 # Enable the Mellanox Software Tools service
 apt-get -y install mft && systemctl enable mst || true

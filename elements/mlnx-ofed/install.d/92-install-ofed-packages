@@ -18,12 +18,12 @@ if [ -d /etc/apt/sources.list.d ] ; then
  apt-get -y install $MLNX_OFED_PKGLIST
  echo "running automatic fix, based on issues in version 4.1-1.0.2.0 & 2.0-1.0.0.0"
  if [ "$DIB_MLNX_OFED_VERSION" = "4.2-1.0.0.0" ] || [ "$DIB_MLNX_OFED_VERSION" = "4.1-1.0.2.0" ]; then
-  for kernel in `ls /usr/src/`;do
+  for kernel in $(ls /usr/src/ | grep linux-headers);do
     if [ ! -e /usr/src/$kernel/arch/amd64 ]; then 
-      ln -s /usr/src/$kernel/arch/x86 /usr/src/$kernel/arch/amd64
+      ln -s /usr/src/$kernel/arch/x86 /usr/src/$kernel/arch/amd64 || echo "failed to create symbolic link: /usr/src/$kernel/arch/amd64"
     fi
     if [ ! -e /usr/src/$kernel/arch/x86_64 ]; then
-      ln -s /usr/src/$kernel/arch/x86 /usr/src/$kernel/arch/x86_64
+      ln -s /usr/src/$kernel/arch/x86 /usr/src/$kernel/arch/x86_64 || echo "failed to create symbolic link: /usr/src/$kernel/arch/x86_64"
     fi
     dpkg-reconfigure $kernel
   done

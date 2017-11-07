@@ -30,4 +30,5 @@ if [ -d /etc/apt/sources.list.d ] ; then
  fi
 # Enable the Mellanox Software Tools service
  apt-get -y install mft && systemctl enable mst || true
+ systemctl enable openibd || true
 fi

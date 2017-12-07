@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+IPA_VENV=/usr/share/ironic-python-agent/venv
+
+$IPA_VENV/bin/pip install git+git://github.com/stackhpc/stackhpc-ipa-hardware-managers.git@${DIB_IPA_STACKHPC_IPA_HARDWARE_MANAGERS_BRANCH:-master}

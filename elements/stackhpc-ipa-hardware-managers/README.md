@@ -2,7 +2,7 @@ StackHPC Ironic Python Agent (IPA) hardware managers
 ====================================================
 
 This element installs StackHPC hardware managers for use
-during node cleaning.
+during node cleaning, provisioning and inspection.
 
 The following environment variables may be set to configure the element:
 

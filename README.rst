@@ -27,3 +27,4 @@ This repository provides the following DIB elements:
 * ``ipa-extra-hardware``: Installs tools for enhanced hardware inspection in an
   Ironic Python Agent (IPA) ramdisk image.
 * ``nvidia-cuda``: Installs Nvidia CUDA repo and packages for GPU support.
+* ``centos-linkup-extra``: Allows extra time for slow network links to come up.

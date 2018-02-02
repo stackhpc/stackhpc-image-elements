@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# Add a LINKDELAY value to /etc/sysconfig/network
+echo -e "# Allow extra time for link up\nLINKDELAY=${CENTOS_LINKUP_EXTRA_SECS}" >> /etc/sysconfig/network

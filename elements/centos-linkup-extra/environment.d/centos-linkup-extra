@@ -1,0 +1,3 @@
+#!/bin/bash
+
+export CENTOS_LINKUP_EXTRA_SECS=${DIB_CENTOS_LINKUP_EXTRA_SECS:-"10"}

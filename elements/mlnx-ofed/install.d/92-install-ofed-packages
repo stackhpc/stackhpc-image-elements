@@ -6,7 +6,29 @@ fi
 set -eu
 set -o pipefail
 
-yum install -y $MLNX_OFED_PKGLIST
-
+if [ -d /etc/yum.repos.d ] ; then
+ yum install -y $MLNX_OFED_PKGLIST
 # Enable the Mellanox Software Tools service
-rpm -q mft && systemctl enable mst || true
+ rpm -q mft && systemctl enable mst || true
+fi
+
+if [ -d /etc/apt/sources.list.d ] ; then
+ apt-get update
+ apt-get -y install linux-headers-generic libc-dev build-essential
+ apt-get -y install $MLNX_OFED_PKGLIST
+ echo "running automatic fix, based on issues in version 4.1-1.0.2.0 & 2.0-1.0.0.0"
+ if [ "$DIB_MLNX_OFED_VERSION" = "4.2-1.0.0.0" ] || [ "$DIB_MLNX_OFED_VERSION" = "4.1-1.0.2.0" ]; then
+  for kernel in $(ls /usr/src/ | grep linux-headers);do
+    if [ ! -e /usr/src/$kernel/arch/amd64 ]; then 
+      ln -s /usr/src/$kernel/arch/x86 /usr/src/$kernel/arch/amd64 || echo "failed to create symbolic link: /usr/src/$kernel/arch/amd64"
+    fi
+    if [ ! -e /usr/src/$kernel/arch/x86_64 ]; then
+      ln -s /usr/src/$kernel/arch/x86 /usr/src/$kernel/arch/x86_64 || echo "failed to create symbolic link: /usr/src/$kernel/arch/x86_64"
+    fi
+    dpkg-reconfigure $kernel
+  done
+ fi
+# Enable the Mellanox Software Tools service
+ apt-get -y install mft && systemctl enable mst || true
+ systemctl enable openibd || true
+fi

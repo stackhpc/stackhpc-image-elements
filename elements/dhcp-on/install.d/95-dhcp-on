@@ -1,18 +1,38 @@
 #!/bin/bash
 
-if [ ! -d /etc/sysconfig/network-scripts ]
-then
-    return -1
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
 fi
+set -eu
+set -o pipefail
 
+if [ -d /etc/sysconfig/network-scripts ]; then
+for INF in ${DHCP_ON_DEV};do
 # If there is no existing network configuration for the given device, 
 # create a catch-all DHCP configuration for this network interface.
-if [ ! -e /etc/sysconfig/network-scripts/ifcfg-$DHCP_ON_DEV ]
+if [ ! -e /etc/sysconfig/network-scripts/ifcfg-${INF} ]
 then
-    cat > /etc/sysconfig/network-scripts/ifcfg-$DHCP_ON_DEV << EOF
-DEVICE="$DHCP_ON_DEV"
+    cat > /etc/sysconfig/network-scripts/ifcfg-${INF} << EOF
+DEVICE="${INF}"
 BOOTPROTO="dhcp"
 ONBOOT="yes"
 TYPE="Ethernet"
 EOF
 fi
+done
+fi
+
+if [ -d /etc/network/interfaces.d ]; then
+for INF in ${DHCP_ON_DEV};do
+# If there is no existing network configuration for the given device, 
+# create a catch-all DHCP configuration for this network interface.
+if [ ! -e /etc/network/interfaces.d/${INF}.cfg ]
+then
+    cat > /etc/network/interfaces.d/${INF}.cfg << EOF
+auto ${INF}
+iface ${INF} inet dhcp
+EOF
+fi
+done
+fi
+

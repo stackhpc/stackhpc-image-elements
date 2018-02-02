@@ -23,7 +23,8 @@ This repository provides the following DIB elements:
 * ``mlnx-ofed``: Installs a Mellanox OFED repo and a configurable set of core packages.
 * ``sriov-hypervisor``: Prepare a hypervisor with networking preparation for SR-IOV support.
 * ``hpc-hypervisor``: Kernel and package optimisations for hypervisor virt optimisations.
-* ``dhcp-on``: Configures network for DHCP only on a single, configurable interface name.
+* ``dhcp-on``: Configures network for DHCP only on configurable interface names.
+* ``cloud-init-no-net``: Configures cloud-init to skip network configuration.
 * ``ipa-extra-hardware``: Installs tools for enhanced hardware inspection in an
   Ironic Python Agent (IPA) ramdisk image.
 * ``nvidia-cuda``: Installs Nvidia CUDA repo and packages for GPU support.

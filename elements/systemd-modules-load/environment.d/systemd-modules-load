@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export DIB_SYSTEMD_MODULES_LOAD_FILE=${DIB_SYSTEMD_MODULES_LOAD_FILE:-dib.conf}
+
+no_content_msg="No boot-time kernel modules have been configured"
+export DIB_SYSTEMD_MODULES_LOAD_CONTENT=${DIB_SYSTEMD_MODULES_LOAD_CONTENT:?$no_content_msg}

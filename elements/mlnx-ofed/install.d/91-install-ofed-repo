@@ -6,8 +6,7 @@ fi
 set -eu
 set -o pipefail
 
-[ -d /etc/yum.repos.d ] || exit -1
-
+if [ -d /etc/yum.repos.d ] ; then
 cat > /etc/yum.repos.d/MLNX-OFED.repo << EOF
 [MLNX-OFED-$MLNX_OFED_VERSION]
 name=MLNX-OFED-$MLNX_OFED_VERSION
@@ -17,3 +16,12 @@ gpgcheck=1
 gpgkey=$MLNX_OFED_REPO/RPM-GPG-KEY-Mellanox
 enabled=1
 EOF
+fi
+
+if [ -d /etc/apt/sources.list.d ] ; then
+cat > /etc/apt/sources.list.d/mlnx_ofed.list << EOF
+deb $MLNX_OFED_REPO/DEBS ./
+EOF
+wget -qO - $MLNX_OFED_REPO/RPM-GPG-KEY-Mellanox | sudo apt-key add -
+fi
+

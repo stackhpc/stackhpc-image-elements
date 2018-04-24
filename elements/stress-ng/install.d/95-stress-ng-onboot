@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+if [ ! -e /lib/systemd/system/stress-ng.service ]
+then
+    cat > /lib/systemd/system/stress-ng.service << EOF
+[Unit]
+Description=stress-ng service
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/bin/stress-ng --sequential 0 --timeout 1m -x af-alg,apparmor,bind-mount,copy-file,exec,getrandom,lockofd,madvise,membarrier,spawn > /root/stress-ng.results 2> /root/stress-ng.err
+
+[Install]
+WantedBy=multi-user.target
+EOF
+fi
+
+systemctl daemon-reload
+systemctl enable stress-ng.service
+

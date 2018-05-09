@@ -7,7 +7,7 @@ set -eu
 set -o pipefail
 
 IPADIR=/usr/share/ironic-python-agent
-PACKAGE=hardware${DIB_IPA_HARDWARE_VERSION:+==}${DIB_IPA_HARDWARE_VERSION:-}
+PACKAGE=${DIB_IPA_HARDWARE_PACKAGE:-hardware${DIB_IPA_HARDWARE_VERSION:+==}${DIB_IPA_HARDWARE_VERSION:-}}
 
 # Install the python hardware package inside the virtual environment.
 $IPADIR/venv/bin/pip install -c $IPADIR/upper-constraints.txt $PACKAGE

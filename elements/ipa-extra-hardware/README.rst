@@ -14,7 +14,10 @@ or the ``ipa-inspection-collectors`` kernel command line argument.
 
 The following environment variables may be set to configure the element:
 
+* ``DIB_IPA_HARDWARE_PACKAGE`` the full ``hardware`` Python package descriptor
+  to use. If unset, ``DIB_IPA_HARDWARE_VERSION`` will be used.
 * ``DIB_IPA_HARDWARE_VERSION`` the version of the ``hardware`` package to
-  install. If unset, the latest version will be installed.
+  install when ``DIB_IPA_HARDWARE_PACKAGE`` is unset. If unset, the latest
+  version will be installed.
 * ``DIB_IPA_EXTRA_HARDWARE_PACKAGES`` a space-separated list of additional
   system packages to install.

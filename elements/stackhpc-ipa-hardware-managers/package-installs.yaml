@@ -1,1 +1,2 @@
-dmidecode:
+dmidecode: # required by system_bios module
+ethtool: # required by system_nic module

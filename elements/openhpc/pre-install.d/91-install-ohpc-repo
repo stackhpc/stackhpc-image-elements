@@ -10,3 +10,4 @@ workspace=$(dirname $0)
 
 [ -d /etc/yum.repos.d ] || exit -1
 cp -n $workspace/OpenHPC.repo /etc/yum.repos.d/
+cp -n $workspace/OpenHPC-updates.repo /etc/yum.repos.d/

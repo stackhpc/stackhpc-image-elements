@@ -19,6 +19,6 @@ esac
 export NVIDIA_CUDA_DISTRO
 export NVIDIA_CUDA_REPO=${DIB_NVIDIA_CUDA_REPO:-"https://developer.download.nvidia.com/compute/cuda/repos/${NVIDIA_CUDA_DISTRO}/x86_64"}
 export NVIDIA_CUDA_PUBKEY=${DIB_NVIDIA_CUDA_PUBKEY:-"http://developer.download.nvidia.com/compute/cuda/repos/${NVIDIA_CUDA_DISTRO}/x86_64/7fa2af80.pub"}
-export NVIDIA_CUDA_VERSION=${DIB_NVIDIA_CUDA_VERSION:-"9.0.176-1"}
+export NVIDIA_CUDA_VERSION=${DIB_NVIDIA_CUDA_VERSION:-"10.1.168-1"}
 export NVIDIA_CUDA_PKGLIST=${DIB_NVIDIA_CUDA_PKGLIST:-"cuda"}
 export NVIDIA_CUDA_DELETE_REPO=${DIB_NVIDIA_CUDA_DELETE_REPO:-y}

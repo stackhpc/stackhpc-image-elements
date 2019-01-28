@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if [ -n "$DIB_EVAL_PRE_INSTALL" ]; then
-    TEMP="$(mktemp)"
-    echo "$DIB_EVAL_PRE_INSTALL" > "$TEMP"
-    chmod +x "$TEMP"
-    "$TEMP"
-    rm -f "$TEMP"
-fi

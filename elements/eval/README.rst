@@ -3,5 +3,6 @@ eval
 ====
 Executes a scripts stored in environmental variables. 
 
-* ``DIB_EVAL_PRE_INSTALL`` BLOB to execute at the pre-install.d stage. 
-  This will have the 00 prefix so that it will be executed early on.
+* ``DIB_EVAL_<REF>``: BLOB to place in TMP_HOOKS 
+* ``DIB_METAEVAL_NAME``: name of script as placed in TMP_HOOKS
+* ``DIB_METAEVAL_HOOK``: folder under TMP_HOOKS to place the script

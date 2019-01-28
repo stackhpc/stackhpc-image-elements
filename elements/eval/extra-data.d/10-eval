@@ -1,0 +1,18 @@
+#!/bin/bash
+
+for value in $(compgen -v); do
+    if [[ "$value" == DIB_EVAL_* ]]; then
+        script="${!value}"
+        ref="${value#DIB_EVAL_}"
+        # grab metadata from:
+        # DIB_METAEVAL_NAME: name of the script
+        # DIB_METAVAL_HOOK: directory where the hook is installed
+        name_ref="DIB_METAEVAL_""$ref""_NAME"
+        hook_ref="DIB_METAEVAL_""$ref""_HOOK"
+        name="${!name_ref}"
+        hook="${!hook_ref}"
+        test -d "$TMP_HOOK_DIR/$hook" || mkdir -p "$TMP_HOOK_DIR/$hook"
+        echo "$script" > "$TMP_HOOK_DIR/$hook/$name"
+    fi
+done
+

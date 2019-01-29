@@ -13,6 +13,7 @@ for value in $(compgen -v); do
         hook="${!hook_ref}"
         test -d "$TMP_HOOK_DIR/$hook" || mkdir -p "$TMP_HOOK_DIR/$hook"
         echo "$script" > "$TMP_HOOK_DIR/$hook/$name"
+        chmod +x "$TMP_HOOK_DIR/$hook/$name"
     fi
 done
 

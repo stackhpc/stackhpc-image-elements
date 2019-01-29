@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -euo pipefail
+IFS=$'\n\t'
+
 for value in $(compgen -v); do
     if [[ "$value" == DIB_EVAL_* ]]; then
         script="${!value}"
@@ -11,9 +14,15 @@ for value in $(compgen -v); do
         hook_ref="DIB_METAEVAL_""$ref""_HOOK"
         name="${!name_ref}"
         hook="${!hook_ref}"
-        test -d "$TMP_HOOK_DIR/$hook" || mkdir -p "$TMP_HOOK_DIR/$hook"
-        echo "$script" > "$TMP_HOOK_DIR/$hook/$name"
-        chmod +x "$TMP_HOOK_DIR/$hook/$name"
+        if [ -z "$name" ]; then
+            die "you must set $name_ref"
+        fi
+        if [ -z "$hook" ]; then
+            die "you must set $hook_ref"
+        fi
+        test -d "$TMP_HOOKS_PATH/$hook" || mkdir -p "$TMP_HOOKS_PATH/$hook"
+        echo "$script" > "$TMP_HOOKS_PATH/$hook/$name"
+        chmod +x "$TMP_HOOKS_PATH/$hook/$name"
     fi
 done
 

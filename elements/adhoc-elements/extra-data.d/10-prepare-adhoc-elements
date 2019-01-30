@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+# define either DIB_ADHOC_EXAMPLE_SCRIPT or DIB_ADHOC_EXAMPLE_DATA not both
+# DIB_ADHOC_EXAMPLE_SCRIPT: script content
+# DIB_ADHOC_EXAMPLE_DATA: data (not executed)
+# DIB_ADHOC_EXAMPLE_PATH: path under $TMP_HOOKS where the hook is installed
+
+for value in $(compgen -v); do
+    if [[ "$value" =~ DIB_ADHOC_(.*)_SCRIPT ]] || [[ "$value" =~ DIB_ADHOC_(.*)_DATA ]]; then
+        name="${BASH_REMATCH[1]}"
+        script_ref="DIB_ADHOC_""$name""_SCRIPT"
+        script="${!script_ref}"
+        data_ref="DIB_ADHOC_""$name""_DATA"
+        data="${!data_ref}"
+        path_ref="DIB_ADHOC_""$name""_PATH"
+        path="${!path_ref}"
+        if [ -n "$data" ] && [ -n "$script" ]; then
+            die "you should only define $data_ref or $script_ref, not both."
+        fi
+        if [ -z "$path" ]; then
+            die "you must set $path_ref"
+        fi
+        dir="$(dirname ${TMP_HOOKS_PATH}/${path})"
+        test -d "$dir" || mkdir -p "$dir"
+        if [ -n "$script" ]; then
+            echo "$script" > "$TMP_HOOKS_PATH/$path"
+            chmod +x "$TMP_HOOKS_PATH/$path"
+        else
+            echo "$data" > "$TMP_HOOKS_PATH/$path"
+        fi
+    fi
+done

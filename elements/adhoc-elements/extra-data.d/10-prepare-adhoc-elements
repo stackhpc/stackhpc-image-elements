@@ -12,9 +12,9 @@ for value in $(compgen -v); do
     if [[ "$value" =~ DIB_ADHOC_(.*)_SCRIPT ]] || [[ "$value" =~ DIB_ADHOC_(.*)_DATA ]]; then
         name="${BASH_REMATCH[1]}"
         script_ref="DIB_ADHOC_""$name""_SCRIPT"
-        script="${!script_ref}"
+        script="${!script_ref:-}"
         data_ref="DIB_ADHOC_""$name""_DATA"
-        data="${!data_ref}"
+        data="${!data_ref:-}"
         path_ref="DIB_ADHOC_""$name""_PATH"
         path="${!path_ref}"
         if [ -n "$data" ] && [ -n "$script" ]; then

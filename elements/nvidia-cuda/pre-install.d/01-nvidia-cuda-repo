@@ -8,9 +8,9 @@ case "$DISTRO_NAME" in
 	dnf install -y ${NVIDIA_CUDA_REPO}/cuda-repo-${NVIDIA_CUDA_DISTRO}-${NVIDIA_CUDA_VERSION}.x86_64.rpm
 	;;
     ubuntu* | debian*)
-	apt-key adv --fetch-keys ${NVIDIA_CUDA_PUBKEY}
 	wget ${NVIDIA_CUDA_REPO}/cuda-repo-${NVIDIA_CUDA_DISTRO}_${NVIDIA_CUDA_VERSION}_amd64.deb
 	dpkg -i cuda-repo-${NVIDIA_CUDA_DISTRO}_${NVIDIA_CUDA_VERSION}_amd64.deb
+	apt-key adv --fetch-keys ${NVIDIA_CUDA_PUBKEY}
 	apt-get update
 	;;
     *)

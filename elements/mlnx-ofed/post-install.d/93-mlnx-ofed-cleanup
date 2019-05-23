@@ -10,3 +10,5 @@ if [ "$MLNX_OFED_DELETE_REPO" = "y" -o "$MLNX_OFED_DELETE_REPO" = "Y" ]
 then
     rm -f /etc/yum.repos.d/MLNX-OFED.repo
 fi
+
+service sharpd stop

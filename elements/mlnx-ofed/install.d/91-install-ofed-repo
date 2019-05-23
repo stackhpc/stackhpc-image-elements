@@ -8,12 +8,16 @@ set -o pipefail
 
 [ -d /etc/yum.repos.d ] || exit -1
 
-cat > /etc/yum.repos.d/MLNX-OFED.repo << EOF
-[MLNX-OFED-$MLNX_OFED_VERSION]
-name=MLNX-OFED-$MLNX_OFED_VERSION
-type=rpm-md
-baseurl=$MLNX_OFED_REPO/RPMS
-gpgcheck=1
-gpgkey=$MLNX_OFED_REPO/RPM-GPG-KEY-Mellanox
-enabled=1
+if [ -n "$MLNX_OFED_REPO_FILE" ]; then
+    wget $MLNX_OFED_REPO_FILE -O /etc/yum.repos.d/MLNX-OFED.repo
+else
+    cat > /etc/yum.repos.d/MLNX-OFED.repo << EOF
+[MLNX-OFED-$MLNX_OFED_VERSION]        
+name=MLNX-OFED-$MLNX_OFED_VERSION        
+type=rpm-md        
+baseurl=$MLNX_OFED_REPO/RPMS        
+gpgcheck=1        
+gpgkey=$MLNX_OFED_REPO/RPM-GPG-KEY-Mellanox        
+enabled=1        
 EOF
+fi

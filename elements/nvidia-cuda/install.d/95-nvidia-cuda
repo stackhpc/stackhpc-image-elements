@@ -2,15 +2,18 @@
 
 case "$DISTRO_NAME" in
     centos* | rhel*)
-	yum install -y kernel-devel-$(uname -r) kernel-headers-$(uname -r)
+	KERNEL_VERSION=$(ls /boot/vmlinuz*x86_64 | sort -n | tail -n1 | cut -d'-' -f2-)
+	yum install -y kernel-devel-$KERNEL_VERSION kernel-headers-$KERNEL_VERSION
 	yum install -y $NVIDIA_CUDA_PKGLIST
 	;;
     fedora*)
-	dnf install -y kernel-devel-$(uname -r) kernel-headers-$(uname -r)
+	KERNEL_VERSION=$(ls /boot/vmlinuz*x86_64 | sort -n | tail -n1 | cut -d'-' -f2-)
+	dnf install -y kernel-devel-$KERNEL_VERSION kernel-headers-$KERNEL_VERSION
 	dnf install -y $NVIDIA_CUDA_PKGLIST
 	;;
     ubuntu* | debian*)
-	apt-get -y install linux-headers-$(uname -r)
+	KERNEL_VERSION="$(ls /boot/vmlinuz*generic | sort -n | tail -n1 | cut -d'-' -f2-)"
+	apt-get -y install linux-headers-$KERNEL_VERSION
 	apt-get -y install $NVIDIA_CUDA_PKGLIST
 	;;
     *)

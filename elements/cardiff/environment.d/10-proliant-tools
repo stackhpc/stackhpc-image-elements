@@ -1,0 +1,2 @@
+# Use more up to date version of proliant tools
+export DIB_SSACLI_URL=${DIB_SSACLI_URL:-https://downloads.hpe.com/pub/softlib2/software1/pubsw-linux/p1857046646/v165910/ssacli-4.15-6.0.x86_64.rpm}

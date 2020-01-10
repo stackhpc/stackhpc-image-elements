@@ -5,6 +5,6 @@
     }
   },
   "default": {
-    "lsb_release": "",
+    "lsb_release": ""
   }
 }

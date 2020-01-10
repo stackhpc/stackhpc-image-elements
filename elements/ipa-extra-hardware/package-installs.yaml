@@ -10,3 +10,4 @@ pciutils:
 sdparm:
 smartmontools:
 sysbench:
+lsb_release:

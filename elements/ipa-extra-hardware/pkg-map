@@ -6,6 +6,5 @@
   },
   "default": {
     "lsb_release": "",
-    "sysbench": "sysbench"
   }
 }

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ "${DIB_DEBUG_TRACE:-1}" -gt 0 ]; then
+    set -x
+fi
+set -u
+set -o pipefail
+
+VERSION=${DIB_DDR_TIMINGS_VERSION:-1.0.0}
+
+push /tmp
+curl -k -o ddr-timings.tar.gz https://github.com/stackhpc/ddr-timings/archive/$VERSION.tar.gz
+tar -xvf ddr-timings.tar.gz
+cd ddr-timings-$VERSION && make install
+popd

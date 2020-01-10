@@ -4,7 +4,9 @@
 # hp-scripting-tools - provides conrep for bios version, settings etc.
 
 # FIXME: RedHat family only
-DIB_RPMS_EXTRA="https://downloads.hpe.com/pub/softlib2/software1/pubsw-linux/p1201555626/v164819/rhel7/x86_64/hp-scripting-tools-11.40-9.rhel7.x86_64.rpm"
+
+CONREP_RPM=${DIB_IPA_EXTRA_HARDWARE_CONREP_RPM:-"https://downloads.hpe.com/pub/softlib2/software1/pubsw-linux/p1201555626/v164819/rhel7/x86_64/hp-scripting-tools-11.40-9.rhel7.x86_64.rpm"}
+DIB_RPMS_EXTRA="$CONREP_RPM"
 
 # prepend packages to the existing list if it has been defined
 if [ ! -z ${DIB_RPMS:+x} ]; then

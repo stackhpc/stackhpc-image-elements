@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+
+# Only set the mirror for the Base, Extras, Updates and CentOSPlus repositories
+# This assumes a fair amount about the structure of the CentOS-Base repo file.
+# Would be nice to use -E "s/^\[(base|updates|extras|centosplus)\]/\[\1_$DIB_CENTOS7_MIRROR_VERSION\]/g"
+
+sed -e "s|^#baseurl=http[s]*://mirror.centos.org/centos|baseurl=$DIB_CENTOS7_MIRROR|" \
+    -e "/^mirrorlist=/d" \
+    -e "s/^\[base\]/\[base_$DIB_CENTOS7_MIRROR_VERSION\]/g" \
+    -e "s/^\[updates\]/\[updates_$DIB_CENTOS7_MIRROR_VERSION\]/g" \
+    -e "s/^\[extras\]/\[extras_$DIB_CENTOS7_MIRROR_VERSION\]/g" \
+    -e "s/^\[centosplus\]/\[centosplus_$DIB_CENTOS7_MIRROR_VERSION\]/g" \
+    -e "s/\$releasever\>/$DIB_CENTOS7_MIRROR_VERSION/g" /etc/yum.repos.d/CentOS-Base.repo > /etc/yum.repos.d/CentOS-Vault.repo
+
+yum clean all
+yum-config-manager --disable base updates extras centosplus
+yum-config-manager --enable {base,updates,extras,centosplus}_$DIB_CENTOS7_MIRROR_VERSION

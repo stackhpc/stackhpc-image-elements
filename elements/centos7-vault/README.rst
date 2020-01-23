@@ -9,13 +9,13 @@ the baseline for built disk images.
 
 DIB_CENTOS7_VERSION:
   :Required: No
-  :Default: 7.7
+  :Default: 7.6
   :Description: Set a version, from 7.1 to 7.7 (inclusive) and the last-known
                 public locations for package repos and cloud images will be used.
 
 DIB_CENTOS7_MIRROR_VERSION:
   :Required: No
-  :Default: 7.7.1908
+  :Default: 7.6.1810
   :Description: Set a fully-qualified version for a build of CentOS.
                 A sensible last-known default value is set according to 
                 ``DIB_CENTOS7_VERSION``.  This value also overwrites
@@ -23,7 +23,7 @@ DIB_CENTOS7_MIRROR_VERSION:
 
 DIB_CENTOS7_CLOUDIMAGE_VERSION:
   :Required: No
-  :Default: GenericCloud-1907
+  :Default: GenericCloud-1811
   :Description: Set a fully-qualified version for a cloud image build.
                 A sensible last-known default value is set according to 
                 ``DIB_CENTOS7_VERSION``.

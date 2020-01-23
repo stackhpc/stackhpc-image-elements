@@ -4,7 +4,8 @@ export DIB_RELEASE=7
 # Useful for elements that work with fedora (dnf) & centos
 export YUM=${YUM:-yum}
 
-export DIB_CENTOS7_VERSION=${DIB_CENTOS7_VERSION:-"7.7"}
+# At the time of writing CentOS 7.7 is still current and the vault content is incomplete.
+export DIB_CENTOS7_VERSION=${DIB_CENTOS7_VERSION:-"7.6"}
 case "$DIB_CENTOS7_VERSION" in
     7.7)
         DIB_CENTOS7_MIRROR_VERSION=${DIB_CENTOS7_MIRROR_VERSION:-"7.7.1908"}

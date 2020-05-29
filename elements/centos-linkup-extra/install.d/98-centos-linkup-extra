@@ -7,4 +7,4 @@ set -eu
 set -o pipefail
 
 # Add a LINKDELAY value to /etc/sysconfig/network
-echo -e "# Allow extra time for link up\nLINKDELAY=${CENTOS_LINKUP_EXTRA_SECS}" >> /etc/sysconfig/network
+echo -e "# Allow extra time for link up\nLINKDELAY=${CENTOS_LINKUP_EXTRA_SECS}\nNETWORKDELAY=${CENTOS_LINKUP_EXTRA_SECS}\n" >> /etc/sysconfig/network

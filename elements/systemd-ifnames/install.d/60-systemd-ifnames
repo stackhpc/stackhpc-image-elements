@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ ! -f /etc/sysconfig/grub ]
+then
+    return -1
+fi
+
+# Remove references to net.ifnames=0 from grub config
+sed -i -e 's/ net.ifnames=0 / /g' /etc/default/grub
+
+# ASSUME: Grub config is going to be rewritten in the DIB process.

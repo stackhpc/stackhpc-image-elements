@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -f /etc/sysconfig/grub ]
+if [ ! -f /etc/default/grub ]
 then
     return -1
 fi

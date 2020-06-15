@@ -1,8 +1,7 @@
 #!/bin/bash
 
-if [ -n "$DIB_MLNX_OFED_REPO_FILE" ]; then
-    export MLNX_OFED_REPO_FILE=${DIB_MLNX_OFED_REPO_FILE}
-else
+export MLNX_OFED_REPO_FILE=${DIB_MLNX_OFED_REPO_FILE:-}
+if [ -z "$MLNX_OFED_REPO_FILE" ]; then
     export MLNX_OFED_REPO=${DIB_MLNX_OFED_REPO:?"A repo URL for Mellanox OFED packages is required"}
     export MLNX_OFED_VERSION=${DIB_MLNX_OFED_VERSION:?"A revision of OFED is required"}
 fi

@@ -6,18 +6,13 @@ fi
 set -eu
 set -o pipefail
 
-[ -d /etc/yum.repos.d ] || exit -1
-
-if [ -n "$MLNX_OFED_REPO_FILE" ]; then
-    wget $MLNX_OFED_REPO_FILE -O /etc/yum.repos.d/MLNX-OFED.repo
+if $(which dnf > /dev/null 2>&1); then
+    dnf config-manager --add-repo "$MLNX_OFED_REPO_FILE"
+elif $(which yum-config-manager > /dev/null 2>&1); then
+    yum-config-manager --add-repo "$MLNX_OFED_REPO_FILE"
 else
-    cat > /etc/yum.repos.d/MLNX-OFED.repo << EOF
-[MLNX-OFED-$MLNX_OFED_VERSION]        
-name=MLNX-OFED-$MLNX_OFED_VERSION        
-type=rpm-md        
-baseurl=$MLNX_OFED_REPO/RPMS        
-gpgcheck=1        
-gpgkey=$MLNX_OFED_REPO/RPM-GPG-KEY-Mellanox        
-enabled=1        
-EOF
+   echo "Unsupported distro"
+   exit -1
 fi
+
+rpm --import http://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox

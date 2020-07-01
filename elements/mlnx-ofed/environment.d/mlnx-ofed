@@ -1,9 +1,3 @@
 #!/bin/bash
 
-export MLNX_OFED_REPO_FILE=${DIB_MLNX_OFED_REPO_FILE:-}
-if [ -z "$MLNX_OFED_REPO_FILE" ]; then
-    export MLNX_OFED_REPO=${DIB_MLNX_OFED_REPO:?"A repo URL for Mellanox OFED packages is required"}
-    export MLNX_OFED_VERSION=${DIB_MLNX_OFED_VERSION:?"A revision of OFED is required"}
-fi
-export MLNX_OFED_PKGLIST=${DIB_MLNX_OFED_PKGLIST:-"mlnx-ofed-hpc mlnx-fw-updater"}
-export MLNX_OFED_DELETE_REPO=${DIB_MLNX_OFED_DELETE_REPO:-y}
+export MLNX_OFED_REPO_FILE=${DIB_MLNX_OFED_REPO_FILE:?"You must specify DIB_MLNX_OFED_REPO_FILE"}

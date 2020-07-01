@@ -6,7 +6,11 @@ fi
 set -eu
 set -o pipefail
 
-yum install -y $MLNX_OFED_PKGLIST
-
-# Enable the Mellanox Software Tools service
-rpm -q mft && systemctl enable mst || true
+if $(which dnf > /dev/null 2>&1); then
+    dnf group install -y "Infiniband Support"
+elif $(which dnf > /dev/null 2>&1); then
+    yum groupinstall -y "Infiniband Support"
+else
+   echo "Unsupported distro"
+   exit -1
+fi

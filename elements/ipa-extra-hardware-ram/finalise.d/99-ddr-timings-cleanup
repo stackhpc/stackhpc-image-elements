@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+install-packages -e gcc
+
+if $(which yum > /dev/null 2>&1); then
+    
+    ${YUM:-yum} clean all
+
+    # Rebuilding the rpm database after removing packages will reduce
+    # its size
+    rpm --rebuilddb
+
+fi

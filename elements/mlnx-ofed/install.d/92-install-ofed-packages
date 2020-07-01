@@ -8,7 +8,7 @@ set -o pipefail
 
 if $(which dnf > /dev/null 2>&1); then
     dnf group install -y "Infiniband Support"
-elif $(which dnf > /dev/null 2>&1); then
+elif $(which yum > /dev/null 2>&1); then
     yum groupinstall -y "Infiniband Support"
 else
    echo "Unsupported distro"

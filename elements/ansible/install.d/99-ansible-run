@@ -1,0 +1,12 @@
+#!/bin/bash
+
+for value in $(compgen -v); do
+    if [[ "$value" =~ DIB_ANSIBLE_(.*)_REPO ]]; then
+        name="${BASH_REMATCH[1]}"
+        repo_ref="DIB_ANSIBLE""$name""_REPO"
+        repo="${!repo_ref?"You must set DIB_ANSIBLE_$name""_REPO"}"
+        opts_ref="DIB_ANSIBLE""$name""_OPTS"
+        opts="${!opts_ref:-}"
+        "$DIB_ANSIBLE_VENV/bin/ansible-pull" -U "$repo" $opts
+   fi
+done

@@ -1,0 +1,5 @@
+# Needed to create the virtualenv
+git:
+  phase: pre-install.d
+python3.6:
+  phase: pre-install.d

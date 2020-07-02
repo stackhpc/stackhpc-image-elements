@@ -1,7 +1,7 @@
 =======
 ansible
 =======
-Runs ansible pull late in the install.d phase.
+Runs ansible pull late in the finalise.d phase so that the image has been mostly configured.
 
 * ``DIB_ANSIBLE_<REF>_SRC``: Git repository pointing to your ansible code.
 * ``DIB_ANSIBLE_<REF>_OPTS``: (Optional) Extra command line arguments to pass to ansible-pull

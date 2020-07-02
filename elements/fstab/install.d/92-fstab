@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+touch /etc/fstab
+
+for value in $(compgen -v); do
+    if [[ "$value" =~ DIB_FSTAB_(.*)_PATH ]]; then
+        name="${BASH_REMATCH[1]}"
+        # Extract variables of the form DIB_FSTAB_EXAMPLE_PATH,
+        # DIB_FSTAB_EXAMPLE_SRC, etc.
+        src_ref="DIB_FSTAB_""$name""_SRC"
+        src="${!src_ref?"You must set DIB_FSTAB_$name""_SRC"}"
+        type_ref="DIB_FSTAB_""$name""_TYPE"
+        type=${!type_ref:?"You must set DIB_FSTAB_$name""_TYPE"}
+	    path_ref="DIB_FSTAB_""$name""_PATH"
+        path="${!path_ref:-}"
+        opts_ref="DIB_FSTAB_""$name""_OPTS"
+        options="${!opts_ref:-defaults}"
+        dump_ref="DIB_FSTAB_""$name""_DUMP"
+        dump="${!dump_ref:-0}"
+        pass_ref="DIB_FSTAB_""$name""_PASS"
+        pass="${!pass_ref:-0}"
+        # Make sure the mount point exists
+        mkdir -p "$path"
+        # Template fstab
+        cat << EOF >> /etc/fstab
+$src $path $type $options $dump $pass
+EOF
+   fi
+done

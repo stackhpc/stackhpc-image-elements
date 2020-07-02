@@ -1,11 +1,17 @@
 #!/bin/bash
 
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
 for value in $(compgen -v); do
     if [[ "$value" =~ DIB_ANSIBLE_(.*)_SRC ]]; then
         name="${BASH_REMATCH[1]}"
-        repo_ref="DIB_ANSIBLE""$name""_SRC"
-        repo="${!repo_ref:?"You must set DIB_ANSIBLE_$name""_SRC"}"
-        opts_ref="DIB_ANSIBLE""$name""_OPTS"
+        repo_ref="DIB_ANSIBLE_""$name""_SRC"
+        repo=${!repo_ref:?"You must set DIB_ANSIBLE_$name""_SRC"}
+        opts_ref="DIB_ANSIBLE_""$name""_OPTS"
         opts="${!opts_ref:-}"
         "$DIB_ANSIBLE_VENV/bin/ansible-pull" -U "$repo" $opts
    fi

@@ -1,6 +1,6 @@
-==========================
-openhpc-network-slurm-conf
-==========================
+===================
+slurm-network-conf
+===================
 Configures slurm to use config file from a network file system
 
 * ``DIB_SLURMD_NETWORK_MOUNT``: Path to mount point

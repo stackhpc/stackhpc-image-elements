@@ -13,6 +13,13 @@ for value in $(compgen -v); do
         repo=${!repo_ref:?"You must set DIB_ANSIBLE_$name""_SRC"}
         opts_ref="DIB_ANSIBLE_""$name""_OPTS"
         opts="${!opts_ref:-}"
-        "$DIB_ANSIBLE_VENV/bin/ansible-pull" -U "$repo" $opts
+        # Use vault password helper to avoid writing password to disk
+        vault_ref="DIB_ANSIBLE_""$name""_VAULT_PASSWORD"
+        export ANSIBLE_VAULT_PASSWORD="${!vault_ref:-}"
+        vault_password=""
+        if [ ! -z ${ANSIBLE_VAULT_PASSWORD:+x} ]; then
+            vault_password="--vault-password-file /opt/ansible-pull/bin/vault-password-helper.sh"
+        fi
+        "$DIB_ANSIBLE_VENV/bin/ansible-pull" $vault_password -U "$repo" $opts
    fi
 done

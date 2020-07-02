@@ -1,3 +1,5 @@
 #!/bin/bash
 
 export MLNX_OFED_REPO_FILE=${DIB_MLNX_OFED_REPO_FILE:?"You must specify DIB_MLNX_OFED_REPO_FILE"}
+# Mellanox are slow at packaging drivers to match the latest kernel
+export DIB_DISABLE_KERNEL_CLEANUP=1

@@ -8,7 +8,7 @@ Runs ansible playbooks late in the finalise.d phase so that the image has been m
 * ``DIB_ANSIBLE_<REF>_OPTS``: (Optional) Extra command line arguments to pass to ansible-pull.
 * ``DIB_ANSIBLE_<REF>_VAULT_PASSWORD``: (Optional) Vault password.
 * ``DIB_ANSIBLE_<REF>_SUBDIR``: (Optional) Subdirectory in the git checkout where the ansible code lives.
-* |``DIB_ANSIBLE_<REF>_PLAYBOOKS``: (Optional) Playbooks to run, relative to ``DIB_ANSIBLE_<REF>_SUBDIR``
+* | ``DIB_ANSIBLE_<REF>_PLAYBOOKS``: (Optional) Playbooks to run, relative to ``DIB_ANSIBLE_<REF>_SUBDIR``
   | if set. Defaults to ``main.yml``. Multiple values must be separated by a space.
 * ``DIB_ANSIBLE_PKG``: (Optional) Globally controls the version of ansible to use.
 

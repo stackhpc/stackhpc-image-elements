@@ -37,7 +37,7 @@ for value in $(compgen -v); do
         playbooks_ref="DIB_ANSIBLE_""$name""_PLAYBOOKS"
         playbooks="${!playbooks_ref:-main.yml}"
 
-        pushd $checkout/$subdir
+        pushd "$checkout/$subdir"
         "$DIB_ANSIBLE_VENV/bin/ansible-playbook" $vault_password $opts $playbooks
         popd
    fi

@@ -1,7 +1,7 @@
 =======
 ansible
 =======
-Runs ansible playbooks late in the finalise.d phase so that the image has been mostly configured.
+Runs ansible playbooks late in the install.d phase so that the image has been mostly configured.
 
 * ``DIB_ANSIBLE_<REF>_SRC``: Git repository pointing to your ansible code.
 * ``DIB_ANSIBLE_<REF>_BRANCH``: (Optional) Branch of repository to checkout. Defaults to ``master``.
@@ -29,3 +29,5 @@ Example
     export DIB_ANSIBLE_EXAMPLE_SUBDIR=ansible
     export DIB_ANSIBLE_EXAMPLE_PLAYBOOKS="main.yml build.yml"
     export DIB_ANSIBLE_PKG='ansible<2.9.0'
+    # Needed if you install an older kernel
+    export DIB_DISABLE_KERNEL_CLEANUP=1

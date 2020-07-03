@@ -4,6 +4,7 @@ ansible
 Runs ansible playbooks late in the finalise.d phase so that the image has been mostly configured.
 
 * ``DIB_ANSIBLE_<REF>_SRC``: Git repository pointing to your ansible code.
+* ``DIB_ANSIBLE_<REF>_BRANCH``: (Optional) Branch of repository to checkout. Defaults to ``master``.
 * ``DIB_ANSIBLE_<REF>_OPTS``: (Optional) Extra command line arguments to pass to ansible-pull.
 * ``DIB_ANSIBLE_<REF>_VAULT_PASSWORD``: (Optional) Vault password.
 * ``DIB_ANSIBLE_<REF>_SUBDIR``: (Optional) Subdirectory in the git checkout where the ansible code lives.
@@ -22,6 +23,7 @@ Example
 .. code-block::
 
     export DIB_ANSIBLE_EXAMPLE_SRC=https://github.com/jovial/ansible-pull-hello-world.git
+    export DIB_ANSIBLE_EXAMPLE_BRANCH=test-branch
     export DIB_ANSIBLE_EXAMPLE_OPTS="-i hosts -e buildgroup=computes"
     export DIB_ANSIBLE_EXAMPLE_VAULT_PASSWORD="topsecret"
     export DIB_ANSIBLE_EXAMPLE_SUBDIR=ansible

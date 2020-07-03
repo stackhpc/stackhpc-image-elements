@@ -13,6 +13,13 @@ for value in $(compgen -v); do
         repo_ref="DIB_ANSIBLE_""$name""_SRC"
         repo=${!repo_ref:?"You must set DIB_ANSIBLE_$name""_SRC"}
 
+        branch_ref="DIB_ANSIBLE_""$name""_BRANCH"
+        branch=${!branch_ref:-}
+        branch_option=""
+        if [ ! -z ${branch:+x} ]; then
+            branch_option="-b $branch"
+        fi
+
         opts_ref="DIB_ANSIBLE_""$name""_OPTS"
         opts="${!opts_ref:-}"
 
@@ -28,7 +35,7 @@ for value in $(compgen -v); do
         subdir="${!subdir_ref:-}"
 
         checkout=/"tmp/dib-ansible-$name"
-        git clone "$repo" "$checkout" --depth 1
+        git clone "$repo" "$checkout" $branch_option --depth 1
         if [ -f "$checkout/$subdir/requirements.yml" ]; then
             "$DIB_ANSIBLE_VENV/bin/ansible-galaxy" install -r "$checkout/$subdir"/requirements.yml \
                 -p "$checkout/$subdir"/roles/

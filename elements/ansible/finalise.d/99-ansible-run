@@ -9,10 +9,13 @@ set -o pipefail
 for value in $(compgen -v); do
     if [[ "$value" =~ DIB_ANSIBLE_(.*)_SRC ]]; then
         name="${BASH_REMATCH[1]}"
+
         repo_ref="DIB_ANSIBLE_""$name""_SRC"
         repo=${!repo_ref:?"You must set DIB_ANSIBLE_$name""_SRC"}
+
         opts_ref="DIB_ANSIBLE_""$name""_OPTS"
         opts="${!opts_ref:-}"
+
         # Use vault password helper to avoid writing password to disk
         vault_ref="DIB_ANSIBLE_""$name""_VAULT_PASSWORD"
         export ANSIBLE_VAULT_PASSWORD="${!vault_ref:-}"
@@ -20,12 +23,22 @@ for value in $(compgen -v); do
         if [ ! -z ${ANSIBLE_VAULT_PASSWORD:+x} ]; then
             vault_password="--vault-password-file /opt/ansible-pull/bin/vault-password-helper.sh"
         fi
+
+        subdir_ref="DIB_ANSIBLE_""$name""_SUBDIR"
+        subdir="${!subdir_ref:-}"
+
         checkout=/"tmp/dib-ansible-$name"
         git clone "$repo" "$checkout" --depth 1
-        if [ -f "$checkout/requirements.yml" ]; then
-            "$DIB_ANSIBLE_VENV/bin/ansible-galaxy" install -r "$checkout"/requirements.yml \
-                -p "$checkout"/roles/
+        if [ -f "$checkout/$subdir/requirements.yml" ]; then
+            "$DIB_ANSIBLE_VENV/bin/ansible-galaxy" install -r "$checkout/$subdir"/requirements.yml \
+                -p "$checkout/$subdir"/roles/
         fi
-        "$DIB_ANSIBLE_VENV/bin/ansible-pull" -d $checkout $vault_password -U "$repo" $opts
+
+        playbooks_ref="DIB_ANSIBLE_""$name""_PLAYBOOKS"
+        playbooks="${!playbooks_ref:-main.yml}"
+
+        pushd $checkout/$subdir
+        "$DIB_ANSIBLE_VENV/bin/ansible-playbook" $vault_password $opts $playbooks
+        popd
    fi
 done

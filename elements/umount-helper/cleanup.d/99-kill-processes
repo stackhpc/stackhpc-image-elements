@@ -6,4 +6,4 @@ fi
 set -eu
 set -o pipefail
 
-sudo kill `sudo lsof $TMP_BUILD_DIR/mnt | tail -n +2 | awk '{print $2}' | xargs` || true
+sudo lsof $TMP_BUILD_DIR/mnt | tail -n +2 | awk '{print $2}' | xargs sudo kill || true

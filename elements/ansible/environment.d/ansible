@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export DIB_ANSIBLE_PKG=${DIB_ANSIBLE_PKG:-ansible}
+export DIB_ANSIBLE_VENV=/opt/ansible-pull

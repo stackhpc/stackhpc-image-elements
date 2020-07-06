@@ -1,0 +1,75 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+function cleanup () {
+  set +eu
+  sudo umount -R $tmp_dir
+  rmdir $tmp_dir
+}
+
+function mount_proc_dev_sys () {
+    # supporting kernel file systems
+    sudo mount -t proc none $tmp_dir/proc
+    sudo mount --bind /dev $tmp_dir/dev
+    sudo mount -t devpts $(mount_dev_pts_options) devpts $tmp_dir/dev/pts
+    sudo mount -t sysfs none $tmp_dir/sys
+}
+
+tmp_dir=$(mktemp -d)
+sudo mount --bind "$TARGET_ROOT" "$tmp_dir"
+mount_proc_dev_sys
+
+trap cleanup EXIT
+
+for value in $(compgen -v); do
+    if [[ "$value" =~ DIB_ANSIBLE_(.*)_SRC ]]; then
+        name="${BASH_REMATCH[1]}"
+
+        repo_ref="DIB_ANSIBLE_""$name""_SRC"
+        repo=${!repo_ref:?"You must set DIB_ANSIBLE_$name""_SRC"}
+
+        branch_ref="DIB_ANSIBLE_""$name""_BRANCH"
+        branch=${!branch_ref:-}
+        branch_option=""
+        if [ ! -z ${branch:+x} ]; then
+            branch_option="-b $branch"
+        fi
+
+        opts_ref="DIB_ANSIBLE_""$name""_OPTS"
+        opts="${!opts_ref:-}"
+
+        # Use vault password helper to avoid writing password to disk
+        vault_ref="DIB_ANSIBLE_""$name""_VAULT_PASSWORD"
+        export ANSIBLE_VAULT_PASSWORD="${!vault_ref:-}"
+        vault_password=""
+        if [ ! -z ${ANSIBLE_VAULT_PASSWORD:+x} ]; then
+            vault_password="--vault-password-file /opt/ansible-pull/bin/vault-password-helper.sh"
+        fi
+
+        subdir_ref="DIB_ANSIBLE_""$name""_SUBDIR"
+        subdir="${!subdir_ref:-}"
+
+        playbooks_ref="DIB_ANSIBLE_""$name""_PLAYBOOKS"
+        playbooks="${!playbooks_ref:-main.yml}"
+
+        checkout=/"tmp/dib-ansible-$name"
+
+        sudo chroot $tmp_dir /bin/bash << EOF
+        set -eux
+        git clone "$repo" "$checkout" $branch_option --depth 1
+        if [ -f "$checkout/$subdir/requirements.yml" ]; then
+            "$DIB_ANSIBLE_VENV/bin/ansible-galaxy" install -r "$checkout/$subdir"/requirements.yml \
+                -p "$checkout/$subdir"/roles/
+        fi
+        pushd "$checkout/$subdir"
+        "$DIB_ANSIBLE_VENV/bin/ansible-playbook" $vault_password $opts $playbooks
+        popd
+EOF
+
+   fi
+done

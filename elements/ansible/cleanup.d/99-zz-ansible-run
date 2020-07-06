@@ -6,9 +6,15 @@ fi
 set -eu
 set -o pipefail
 
+source $_LIB/common-functions
+
 function cleanup () {
   set +eu
-  sudo umount -R $tmp_dir
+    kill_chroot_processes $tmp_dir
+    if ! timeout 120 sh -c "while ! sudo umount -R $tmp_dir; do sleep 1; done"; then
+        echo "ERROR: failed to umount the $tmp_dir tmpfs mount point"
+        exit 1
+    fi
   rmdir $tmp_dir
 }
 

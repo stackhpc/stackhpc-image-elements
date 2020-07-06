@@ -50,7 +50,7 @@ for value in $(compgen -v); do
 
         checkout=/"tmp/dib-ansible-$name"
 
-	    sudo systemd-nspawn -D $tmp_dir /bin/bash << EOF
+        sudo systemd-nspawn -D $tmp_dir /bin/bash << EOF
         git clone "$repo" "$checkout" $branch_option --depth 1
         if [ -f "$checkout/$subdir/requirements.yml" ]; then
             "$DIB_ANSIBLE_VENV/bin/ansible-galaxy" install -r "$checkout/$subdir"/requirements.yml \

@@ -8,12 +8,22 @@ set -o pipefail
 
 cleanup() {
   set +eu
-  sudo umount $tmp_dir
+  sudo umount -R $tmp_dir
   rmdir $tmp_dir
 }
 
+function mount_proc_dev_sys () {
+    # supporting kernel file systems
+    sudo mount -t proc none $tmp_dir/proc
+    sudo mount --bind /dev $tmp_dir/dev
+    sudo mount -t devpts $(mount_dev_pts_options) devpts $tmp_dir/dev/pts
+    sudo mount -t sysfs none $tmp_dir/sys
+}
+
+
 tmp_dir=$(mktemp -d)
 sudo mount --bind "$TARGET_ROOT" "$tmp_dir"
+mount_proc_dev_sys
 
 trap cleanup EXIT
 
@@ -50,7 +60,8 @@ for value in $(compgen -v); do
 
         checkout=/"tmp/dib-ansible-$name"
 
-        sudo systemd-nspawn -D $tmp_dir /bin/bash << EOF
+        sudo chroot $tmp_dir /bin/bash << EOF
+        set -eux
         git clone "$repo" "$checkout" $branch_option --depth 1
         if [ -f "$checkout/$subdir/requirements.yml" ]; then
             "$DIB_ANSIBLE_VENV/bin/ansible-galaxy" install -r "$checkout/$subdir"/requirements.yml \

@@ -1,7 +1,7 @@
 =======
 ansible
 =======
-Runs ansible playbooks late in the finalise.d phase so that the image has been mostly configured.
+Runs ansible playbooks late in the cleanup.d phase so that the image has been mostly configured. Requires systemd-nspawn.
 
 * ``DIB_ANSIBLE_<REF>_SRC``: Git repository pointing to your ansible code.
 * ``DIB_ANSIBLE_<REF>_BRANCH``: (Optional) Branch of repository to checkout. Defaults to ``master``.

@@ -8,5 +8,5 @@ set -o pipefail
 
 if [ ! -z "$ALASKA_PKGLIST" ]
 then
-    yum install -y ${ALASKA_PKGLIST}
+    ${YUM:-yum} install -y ${ALASKA_PKGLIST}
 fi

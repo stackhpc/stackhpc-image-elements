@@ -3,7 +3,7 @@
 case "$DISTRO_NAME" in
     centos* | rhel*)
 	rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-	dnf install https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm
+	dnf install -y https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm
 	;;
     *)
 	echo "Distro \"$DISTRO_NAME\" is not supported"

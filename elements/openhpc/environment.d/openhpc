@@ -1,5 +1,26 @@
 #!/bin/bash
 
-export OPENHPC_GRPLIST=${DIB_OPENHPC_GRPLIST:-"ohpc-base-compute ohpc-slurm-client 'InfiniBand Support'"}
-export OPENHPC_PKGLIST=${DIB_OPENHPC_PKGLIST:-"lmod-ohpc mrsh-ohpc lustre-client-ohpc"}
+# Choose from one of a couple of pre-defined repo RPM values
+case ${DIB_OPENHPC_VERSION:="2.0"} in
+    "1.3")
+	export OPENHPC_REPO_RPM="https://github.com/openhpc/ohpc/releases/download/v1.3.GA/ohpc-release-1.3-1.el7.x86_64.rpm"
+	export OPENHPC_PKGMGR="yum"
+	export OPENHPC_GRPLIST=${DIB_OPENHPC_GRPLIST:-"ohpc-base-compute ohpc-slurm-client 'InfiniBand Support'"}
+	export OPENHPC_PKGLIST=${DIB_OPENHPC_PKGLIST:-"lmod-ohpc mrsh-ohpc lustre-client-ohpc"}
+	;;
+    "2.0")
+	export OPENHPC_REPO_RPM="http://repos.openhpc.community/OpenHPC/2/CentOS_8/x86_64/ohpc-release-2-1.el8.x86_64.rpm"
+	export OPENHPC_PKGMGR="dnf"
+	export OPENHPC_GRPLIST=${DIB_OPENHPC_GRPLIST:-""}
+	export OPENHPC_PKGLIST=${DIB_OPENHPC_PKGLIST:-"ohpc-base lmod-ohpc ohpc-slurm-client ohpc-gnu9-runtimes openmpi4-gnu9-ohpc"}
+	;;
+    "*")
+	echo "Unrecognised/unsupported version of OpenHPC requested: $DIB_OPENHPC_VERSION"
+	exit -1;;
+esac
+export DIB_OPENHPC_VERSION
+
+# A URL for the repo RPM can be supplied directly
+[[ ! -z "${DIB_OPENHPC_REPO_RPM:-}" ]] && export OPENHPC_REPO_RPM=$DIB_OPENHPC_REPO_RPM
+
 export OPENHPC_DELETE_REPO=${DIB_OPENHPC_DELETE_REPO:-n}

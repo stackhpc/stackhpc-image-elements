@@ -6,5 +6,5 @@ fi
 set -eu
 set -o pipefail
 
-[ ! -z "$OPENHPC_GRPLIST" ] && yum groupinstall -y $OPENHPC_GRPLIST
-[ ! -z "$OPENHPC_PKGLIST" ] && yum install -y $OPENHPC_PKGLIST
+[ ! -z "$OPENHPC_GRPLIST" ] && $OPENHPC_PKGMGR groupinstall -y $OPENHPC_GRPLIST
+[ ! -z "$OPENHPC_PKGLIST" ] && $OPENHPC_PKGMGR install -y $OPENHPC_PKGLIST

@@ -10,7 +10,7 @@ the baseline for built disk images.
 DIB_CENTOS7_VERSION:
   :Required: No
   :Default: 7.6
-  :Description: Set a version, from 7.1 to 7.7 (inclusive) and the last-known
+  :Description: Set a version, from 7.1 to 7.9 (inclusive) and the last-known
                 public locations for package repos and cloud images will be used.
 
 DIB_CENTOS7_MIRROR_VERSION:

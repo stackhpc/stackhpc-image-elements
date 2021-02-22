@@ -8,7 +8,7 @@ set -o pipefail
 
 if [ "$OPENHPC_DELETE_REPO" = "y" -o "$OPENHPC_DELETE_REPO" = "Y" ]
 then
-    rm -f /etc/yum.repos.d/OpenHPC.repo
+    $OPENHPC_PKGMGR remove ohpc-release
 fi
 
-systemctl enable ntpd.service
+#systemctl enable ntpd.service

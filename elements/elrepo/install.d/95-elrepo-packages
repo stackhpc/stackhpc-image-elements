@@ -1,0 +1,10 @@
+#!/bin/bash -lv
+
+if [[ ${DISTRO_NAME} =~ (centos|rhel) && -n ${DIB_ELREPO_PKGLIST} ]]; then
+    dnf install -y "${DIB_ELREPO_PKGLIST}"
+else
+    echo "You must set the package list: \"$DIB_ELREPO_PKGLIST\"."
+    exit 1
+fi
+
+exit 0

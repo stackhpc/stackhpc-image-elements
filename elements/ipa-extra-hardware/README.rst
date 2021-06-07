@@ -21,3 +21,6 @@ The following environment variables may be set to configure the element:
   version will be installed.
 * ``DIB_IPA_EXTRA_HARDWARE_PACKAGES`` a space-separated list of additional
   system packages to install.
+
+For Wallaby and later releases, it is recommended to use an upstream version
+of the `element <https://opendev.org/openstack/ironic-python-agent-builder/src/branch/master/dib/extra-hardware>`_.

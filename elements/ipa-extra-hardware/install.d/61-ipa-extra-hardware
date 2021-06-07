@@ -6,17 +6,29 @@ fi
 set -eu
 set -o pipefail
 
-IPADIR=/usr/share/ironic-python-agent
 PACKAGE=${DIB_IPA_HARDWARE_PACKAGE:-hardware${DIB_IPA_HARDWARE_VERSION:+==}${DIB_IPA_HARDWARE_VERSION:-}}
 
-# Install the python hardware package inside the virtual environment.
-$IPADIR/venv/bin/pip install -c $IPADIR/upper-constraints.txt $PACKAGE
+if [[ -d /usr/share/ironic-python-agent ]]; then
+    IPADIR=/usr/share/ironic-python-agent
+else
+    IPADIR=/opt/ironic-python-agent
+fi
+
+if [[ -d "$IPADIR/venv" ]]; then
+    $IPADIR/venv/bin/pip install -c $IPADIR/upper-constraints.txt $PACKAGE
+else
+    $IPADIR/bin/pip install -c /tmp/requirements/upper-constraints.txt $PACKAGE
+fi
 
 # Because the ironic-python-agent systemd unit does not activate the virtualenv
 # before executing the ironic-python-agent script, the PATH is not updated to
 # point to the bin directory in the virtual environment. We add this symlink so
 # that ironic-python-agent sees the hardware-detect tool in its PATH.
-ln -s $IPADIR/venv/bin/hardware-detect /usr/local/bin/hardware-detect
+if [[ -d "$IPADIR/venv" ]]; then
+    ln -s $IPADIR/venv/bin/hardware-detect /usr/local/bin/hardware-detect
+else
+    ln -s $IPADIR/bin/hardware-detect /usr/local/bin/hardware-detect
+fi
 
 # Install additional packages as requested.
 if [[ -n ${DIB_IPA_EXTRA_HARDWARE_PACKAGES:-} ]]; then

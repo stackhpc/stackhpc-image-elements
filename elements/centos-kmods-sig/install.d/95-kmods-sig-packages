@@ -1,0 +1,10 @@
+#!/bin/bash -lv
+
+if [[ ${DISTRO_NAME} == centos && -n ${DIB_CENTOS_KMODS_PKGLIST} ]]; then
+    dnf install -y "${DIB_CENTOS_KMODS_PKGLIST}"
+else
+    echo "You must set the package list: \"$DIB_CENTOS_KMODS_PKGLIST\"."
+    exit 1
+fi
+
+exit 0

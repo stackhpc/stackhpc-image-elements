@@ -1,0 +1,22 @@
+#!/bin/bash -lv
+
+case "$DISTRO_NAME" in
+    centos* )
+
+	dnf -y install centos-release-kmods-rebuild
+
+	if [ ${DIB_CENTOS_KMODS_TESTING:-0} -eq 1 ]; then
+		dnf config-manager --set-disabled centos-kmods
+		dnf config-manager --set-enabled centos-kmods-testing
+		dnf config-manager --set-disabled centos-kmods-rebuild
+		dnf config-manager --set-enabled centos-kmods-rebuild-testing
+	fi
+
+	;;
+    *)
+	echo "Distro \"$DISTRO_NAME\" is not supported"
+	exit 1
+	;;
+esac
+
+exit 0

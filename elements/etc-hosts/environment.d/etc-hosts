@@ -1,0 +1,3 @@
+#!/bin/bash
+
+export ETC_HOSTS_EXTRA=${DIB_ETC_HOSTS_EXTRA:?"You must define DIB_ETC_HOSTS_EXTRA"}

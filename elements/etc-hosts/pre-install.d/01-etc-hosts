@@ -6,4 +6,4 @@ fi
 set -eu
 set -o pipefail
 
-echo "$ETC_HOSTS_EXTRA" >> /etc/hosts
+printf "$ETC_HOSTS_EXTRA" >> /etc/hosts

@@ -1,5 +1,7 @@
 #!/bin/bash -lv
 
+set -euo pipefail
+
 case "$DISTRO_NAME" in
     centos* | rhel*)
 	KERNEL_VERSION=$(ls /boot/vmlinuz*x86_64 | sort -n | tail -n1 | cut -d'-' -f2-)

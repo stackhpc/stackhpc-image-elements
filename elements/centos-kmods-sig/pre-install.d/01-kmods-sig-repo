@@ -1,5 +1,7 @@
 #!/bin/bash -lv
 
+set -euo pipefail
+
 case "$DISTRO_NAME" in
     centos* )
 

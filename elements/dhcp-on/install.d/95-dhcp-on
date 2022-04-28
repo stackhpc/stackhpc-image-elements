@@ -1,11 +1,13 @@
 #!/bin/bash
 
+set -euo pipefail
+
 if [ ! -d /etc/sysconfig/network-scripts ]
 then
     return -1
 fi
 
-# If there is no existing network configuration for the given device, 
+# If there is no existing network configuration for the given device,
 # create a catch-all DHCP configuration for this network interface.
 if [ ! -e /etc/sysconfig/network-scripts/ifcfg-$DHCP_ON_DEV ]
 then

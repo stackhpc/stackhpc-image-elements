@@ -1,5 +1,7 @@
 #!/bin/bash -lv
 
+set -euo pipefail
+
 if [[ ${DISTRO_NAME} == centos && -n ${DIB_CENTOS_KMODS_PKGLIST} ]]; then
     dnf install -y ${DIB_CENTOS_KMODS_PKGLIST}
 else

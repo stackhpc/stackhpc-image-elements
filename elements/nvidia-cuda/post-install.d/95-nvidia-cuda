@@ -1,5 +1,7 @@
 #!/bin/bash -lv
 
+set -euo pipefail
+
 if [ "$NVIDIA_CUDA_DELETE_REPO" = "y" -o "$NVIDIA_CUDA_DELETE_REPO" = "Y" ]
 then
     case "$DISTRO_NAME" in

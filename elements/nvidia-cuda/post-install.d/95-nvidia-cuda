@@ -1,4 +1,10 @@
-#!/bin/bash -lv
+#!/bin/bash -l
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+
+set -euo pipefail
 
 if [ "$NVIDIA_CUDA_DELETE_REPO" = "y" -o "$NVIDIA_CUDA_DELETE_REPO" = "Y" ]
 then

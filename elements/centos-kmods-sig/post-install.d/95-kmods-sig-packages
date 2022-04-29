@@ -1,4 +1,10 @@
-#!/bin/bash -lv
+#!/bin/bash -l
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+
+set -euo pipefail
 
 if [[ ${DISTRO_NAME} == centos && -n ${DIB_CENTOS_KMODS_PKGLIST} ]]; then
     dnf install -y ${DIB_CENTOS_KMODS_PKGLIST}

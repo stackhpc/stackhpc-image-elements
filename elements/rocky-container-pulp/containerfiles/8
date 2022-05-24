@@ -1,6 +1,7 @@
-FROM docker.io/rockylinux/rockylinux:8.5
+FROM quay.io/rockylinux/rockylinux:Rocky-8.5.20220328-x86_64
 
-RUN curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.5/BaseOS/x86_64/os/20220517T042605/config.repo > /etc/yum.repos.d/Rocky-BaseOS.repo && \
+RUN rm -rf /etc/yum.repos.d/*.repo && \
+  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.5/BaseOS/x86_64/os/20220517T042605/config.repo > /etc/yum.repos.d/Rocky-BaseOS.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-BaseOS.repo && \
   curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.5/extras/x86_64/os/20220421T052541/config.repo > /etc/yum.repos.d/Rocky-Extras.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-Extras.repo && \
@@ -10,8 +11,8 @@ RUN curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.5/BaseOS/x86
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-PowerTools.repo && \
   curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.5/nfv/x86_64/os/20220506T031824/config.repo > /etc/yum.repos.d/Rocky-NFV.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-NFV.repo
-
 RUN dnf update -y
+
 RUN dnf install -y findutils util-linux sudo python3 NetworkManager
 
 RUN systemctl unmask console-getty.service dev-hugepages.mount \

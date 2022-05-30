@@ -13,8 +13,8 @@ RUN rm -rf /etc/yum.repos.d/*.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-NFV.repo
 RUN dnf update -y
 
-RUN dnf install centos-release-advanced-virtualization -y
-RUN dnf install cloud-init libvirt -y
+RUN dnf install -y centos-release-advanced-virtualization
+RUN dnf install -y cloud-init libvirt qemu-kvm
 
 RUN dnf install -y findutils util-linux sudo python3 NetworkManager
 

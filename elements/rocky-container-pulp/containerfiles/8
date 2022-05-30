@@ -1,4 +1,4 @@
-FROM quay.io/rockylinux/rockylinux:Rocky-8.5.20220328-x86_64
+FROM docker.io/library/rockylinux:8.5
 
 RUN rm -rf /etc/yum.repos.d/*.repo && \
   curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.5/BaseOS/x86_64/os/20220517T042605/config.repo > /etc/yum.repos.d/Rocky-BaseOS.repo && \

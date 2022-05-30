@@ -13,7 +13,7 @@ RUN rm -rf /etc/yum.repos.d/*.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-NFV.repo
 RUN dnf update -y
 
-RUN dnf install -y findutils util-linux sudo python3 NetworkManager
+RUN dnf install -y findutils util-linux sudo python3 NetworkManager cloud-init
 
 RUN systemctl unmask console-getty.service dev-hugepages.mount \
     getty.target sys-fs-fuse-connections.mount systemd-logind.service \

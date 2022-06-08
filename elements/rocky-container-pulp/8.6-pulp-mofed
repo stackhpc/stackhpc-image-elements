@@ -1,11 +1,10 @@
 FROM docker.io/library/rockylinux:8
 
 RUN curl https://linux.mellanox.com/public/repo/mlnx_ofed/5.6-1.0.3.3/rhel8.6/mellanox_mlnx_ofed.repo > /etc/yum.repos.d/mofed.repo
-RUN dnf install -y centos-release-ceph-nautilus
 RUN dnf update -y
 
 RUN dnf -y install mlnx-ofed-hypervisor
-RUN dnf install -y cloud-init libvirt qemu-kvm ceph-common
+RUN dnf install -y cloud-init libvirt qemu-kvm
 
 RUN dnf install -y findutils util-linux sudo python3 NetworkManager
 
@@ -13,4 +12,5 @@ RUN systemctl unmask console-getty.service dev-hugepages.mount \
     getty.target sys-fs-fuse-connections.mount systemd-logind.service \
     systemd-remount-fs.service
 
-
+RUN dnf list --installed
+RUN dnf install -y ceph-common

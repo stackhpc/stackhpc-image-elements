@@ -30,4 +30,8 @@ RUN systemctl unmask console-getty.service dev-hugepages.mount \
     getty.target sys-fs-fuse-connections.mount systemd-logind.service \
     systemd-remount-fs.service
 
+# Add hack because perftest in mofed conflicts and is older than rocky 8.6 version
+RUN dnf install python3-dnf-plugin-versionlock -y
+RUN dnf versionlock add "perftest-4.5-0.14.gd962d8c.56103"
+RUN dnf update -y
 RUN dnf list --installed

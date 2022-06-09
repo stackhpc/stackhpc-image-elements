@@ -16,12 +16,14 @@ RUN rm -rf /etc/yum.repos.d/*.repo && \
   curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/nfv/x86_64/os/${pulp_version}/config.repo > /etc/yum.repos.d/Rocky-NFV.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-NFV.repo && \
   curl https://pulp.128-232-222-245.sslip.io/pulp/content/centos/8/storage/x86_64/ceph-nautilus/20211122T102435/config.repo >  /etc/yum.repos.d/ceph.repo && \
-  echo "gpgkey=https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Storage" >> /etc/yum.repos.d/ceph.repo
+  echo "gpgkey=https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Storage" >> /etc/yum.repos.d/ceph.repo && \
+  curl https://pulp.128-232-222-245.sslip.io/pulp/content/docker-ce/centos/8/x86_64/stable/20211122T102435/config.repo > /etc/yum.repos.d/docker.repo && \
+  echo "gpgkey=https://download.docker.com/linux/centos/gpg" >> /etc/yum.repos.d/docker.repo
 RUN curl https://linux.mellanox.com/public/repo/mlnx_ofed/5.6-1.0.3.3/rhel8.6/mellanox_mlnx_ofed.repo > /etc/yum.repos.d/mofed.repo
 RUN dnf update -y
 
 RUN dnf -y install mlnx-ofed-hypervisor
-RUN dnf install -y cloud-init libvirt qemu-kvm ceph-common edk2-ovmf qemu-kvm-block-rbd cyrus-sasl
+RUN dnf install -y cloud-init libvirt qemu-kvm ceph-common edk2-ovmf qemu-kvm-block-rbd cyrus-sasl docker-ce
 
 # From the base dib element
 RUN dnf install -y findutils util-linux sudo python3 NetworkManager
@@ -33,5 +35,5 @@ RUN systemctl unmask console-getty.service dev-hugepages.mount \
 # Add hack because perftest in mofed conflicts and is older than rocky 8.6 version
 RUN dnf install python3-dnf-plugin-versionlock -y
 RUN dnf versionlock add "perftest-4.5-0.14.gd962d8c.56103"
+# DIB will do this, but run it here to test we are good
 RUN dnf update -y
-RUN dnf list --installed

@@ -10,9 +10,16 @@ if $(which yum > /dev/null 2>&1); then
     yum install -y $DIB_RPMS
 elif $(which zypper > /dev/null 2>&1); then
     pushd /tmp
-    for pkg in DIB_RPMS; do
+    for pkg in $DIB_RPMS; do
         curl -O "$pkg"
         zypper -n in $(basename "$pkg")
+    done
+    popd
+else
+    pushd /tmp
+    for pkg in $DIB_RPMS; do
+        curl -O "$pkg"
+        rpm -i $(basename "$pkg")
     done
     popd
 fi

@@ -29,6 +29,17 @@ RUN dnf update -y
 RUN dnf -y install mlnx-ofed-hypervisor
 RUN dnf install -y cloud-init libvirt qemu-kvm ceph-common edk2-ovmf qemu-kvm-block-rbd cyrus-sasl docker-ce
 
+# Workaround for: Unable to find a system nic for <MAC_ADDRESS> from cloud-init
+# https://askubuntu.com/questions/1400527/unable-to-find-a-system-nic-while-running-cloud-init
+# The strange formatting is so we don't need to use DOCKER_BUILDKIT=1 for
+# heredoc support. Echoing this inline prevents the need to set DIB_CONTAINER_CONTEXT
+# in order to copy the file in (paths are relative to this directory).
+RUN mkdir /etc/systemd/system/cloud-init-local.service.d \
+  && echo $'\
+[Service] \n\
+ExecStartPre=sleep 30 \n' \
+>> /etc/systemd/system/cloud-init-local.service.d/delay.conf
+
 # From the base dib element
 RUN dnf install -y findutils util-linux sudo python3 NetworkManager
 

@@ -3,6 +3,10 @@ FROM docker.io/library/rockylinux:8
 ARG pulp_version=20220606T111205
 ARG rocky_version=8.6
 
+# /etc/machine-id needs to be populated for /bin/kernel-install to
+# correctly copy kernels into /boot.  We will clear this out in the
+# final image.
+RUN systemd-machine-id-setup
 
 RUN rm -rf /etc/yum.repos.d/*.repo && \
   curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/BaseOS/x86_64/os/${pulp_version}/config.repo > /etc/yum.repos.d/Rocky-BaseOS.repo && \

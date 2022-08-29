@@ -1,5 +1,5 @@
 =============
-cloud-init-lvm-growpart
+cloud-init-growpart-lvm
 =============
 
 This element enables growpart for OS images with LVM.

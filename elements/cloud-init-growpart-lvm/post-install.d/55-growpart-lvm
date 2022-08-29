@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+if [ -d /etc/cloud/cloud.cfg.d ]; then
+    cat > /etc/cloud/cloud.cfg.d/55-growpart-lvm.cfg <<EOF
+#cloud-config
+growpart:
+  mode: auto
+  devices:
+    - "/dev/vda3"
+    - "/dev/sda3"
+  ignore_growroot_disabled: false
+EOF
+fi

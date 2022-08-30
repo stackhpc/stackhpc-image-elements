@@ -1,4 +1,1 @@
-cloud-utils-growpart:
-   when: DISTRO_NAME!=ubuntu
-cloud-guest-utils:
-   when: DISTRO_NAME=ubuntu
+growpart_package:

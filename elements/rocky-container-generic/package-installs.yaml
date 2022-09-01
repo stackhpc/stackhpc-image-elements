@@ -71,9 +71,5 @@ libertas-sd8787-firmware:
   uninstall: true
 libertas-usb8388-firmware:
   uninstall: true
-biosdevname:
-  uninstall: true
-iprutils:
-  uninstall: true
 plymouth:
   uninstall: true

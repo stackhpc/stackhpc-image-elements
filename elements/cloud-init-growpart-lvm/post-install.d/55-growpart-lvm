@@ -13,7 +13,7 @@ if [[ -n ${DIB_CLOUD_INIT_GROWPART_DEVICES} ]]; then
       mode: auto
       devices: $DIB_CLOUD_INIT_GROWPART_DEVICES
       ignore_growroot_disabled: false
-    EOF
+EOF
     fi
 else
     echo "You must set the device list: \"$DIB_CLOUD_INIT_GROWPART_DEVICES\"."

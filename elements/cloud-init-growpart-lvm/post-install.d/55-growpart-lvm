@@ -3,17 +3,19 @@
 if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
     set -x
 fi
-set -eu
-set -o pipefail
+set -euo pipefail
 
-if [ -d /etc/cloud/cloud.cfg.d ]; then
-    cat > /etc/cloud/cloud.cfg.d/55-growpart-lvm.cfg <<EOF
-#cloud-config
-growpart:
-  mode: auto
-  devices:
-    - "/dev/vda3"
-    - "/dev/sda3"
-  ignore_growroot_disabled: false
-EOF
+if [[ -n ${DIB_CLOUD_INIT_GROWPART_DEVICES} ]]; then
+    if [ -d /etc/cloud/cloud.cfg.d ]; then
+        cat > /etc/cloud/cloud.cfg.d/55-growpart-lvm.cfg <<EOF
+    #cloud-config
+    growpart:
+      mode: auto
+      devices: $DIB_CLOUD_INIT_GROWPART_DEVICES
+      ignore_growroot_disabled: false
+    EOF
+    fi
+else
+    echo "You must set the device list: \"$DIB_CLOUD_INIT_GROWPART_DEVICES\"."
+    exit 1
 fi

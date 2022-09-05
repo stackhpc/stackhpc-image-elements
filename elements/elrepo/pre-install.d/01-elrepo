@@ -8,20 +8,15 @@ set -euo pipefail
 
 case "$DISTRO_NAME" in
     centos* | rhel* | rocky*)
-	dnf install -y elrepo-release.noarch
-
-	if [ ${DIB_ELREPO_KERNEL:-0} -eq 1 ]; then
-
-		rpm -q dnf-plugins-core || dnf install -y dnf-plugins-core
-		dnf config-manager --set-enabled "elrepo-kernel"
-
-	fi
-
-	;;
+    dnf install -y elrepo-release.noarch
+    if [ ${DIB_ELREPO_KERNEL:-0} -eq 1 ]; then
+        rpm -q dnf-plugins-core || dnf install -y dnf-plugins-core
+        dnf config-manager --set-enabled "elrepo-kernel"
+    fi
+    ;;
     *)
-	echo "Distro \"$DISTRO_NAME\" is not supported"
-	exit 1
-	;;
+    echo "Distro \"$DISTRO_NAME\" is not supported"
+    exit 1
+    ;;
 esac
-
 exit 0

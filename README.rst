@@ -29,3 +29,4 @@ This repository provides the following DIB elements:
 * ``nvidia-cuda``: Installs Nvidia CUDA repo and packages for GPU support.
 * ``centos-linkup-extra``: Allows extra time for slow network links to come up.
 * ``centos7-vault``: Deploy older releases of CentOS 7
+* ``cloud-init-growpart-lvm``: Grows designated LVM partition.

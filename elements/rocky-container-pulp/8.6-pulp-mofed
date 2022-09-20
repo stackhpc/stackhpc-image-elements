@@ -64,7 +64,7 @@ RUN systemctl unmask console-getty.service dev-hugepages.mount \
 
 # Add hack because perftest in mofed conflicts and is older than rocky 8.6 version
 RUN dnf install python3-dnf-plugin-versionlock -y
-RUN dnf versionlock add "perftest-4.5-0.14.gd962d8c.56103"
+RUN dnf versionlock add "perftest-0:4.5-0.17.g6f25f23.57102.*"
 
 # Add support for MPTSAS raid controllers. This kernel module was included in
 # CentOS 7.  We now need an alternative source. Don't leave elrepo installed

@@ -1,6 +1,5 @@
 FROM docker.io/library/rockylinux:8
 
-ARG pulp_version=20220606T111205
 ARG rocky_version=8.6
 
 # /etc/machine-id needs to be populated for /bin/kernel-install to
@@ -9,21 +8,22 @@ ARG rocky_version=8.6
 RUN systemd-machine-id-setup
 
 RUN rm -rf /etc/yum.repos.d/*.repo && \
-  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/BaseOS/x86_64/os/${pulp_version}/config.repo > /etc/yum.repos.d/Rocky-BaseOS.repo && \
+  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/BaseOS/x86_64/os/20220914T080246/config.repo > /etc/yum.repos.d/Rocky-BaseOS.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-BaseOS.repo && \
-  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/extras/x86_64/os/${pulp_version}/config.repo > /etc/yum.repos.d/Rocky-Extras.repo && \
+  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/extras/x86_64/os/20220904T041706/config.repo > /etc/yum.repos.d/Rocky-Extras.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-Extras.repo && \
-  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/AppStream/x86_64/os/${pulp_version}/config.repo > /etc/yum.repos.d/Rocky-AppStream.repo && \
+  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/AppStream/x86_64/os/20220918T035853/config.repo > /etc/yum.repos.d/Rocky-AppStream.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-AppStream.repo && \
-  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/PowerTools/x86_64/os/${pulp_version}/config.repo > /etc/yum.repos.d/Rocky-PowerTools.repo && \
+  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/PowerTools/x86_64/os/20220918T035853/config.repo > /etc/yum.repos.d/Rocky-PowerTools.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-PowerTools.repo && \
-  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/nfv/x86_64/os/${pulp_version}/config.repo > /etc/yum.repos.d/Rocky-NFV.repo && \
+  curl https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/${rocky_version}/nfv/x86_64/os/20220918T035853/config.repo > /etc/yum.repos.d/Rocky-NFV.repo && \
   echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" >> /etc/yum.repos.d/Rocky-NFV.repo && \
   curl https://pulp.128-232-222-245.sslip.io/pulp/content/centos/8/storage/x86_64/ceph-nautilus/20211122T102435/config.repo >  /etc/yum.repos.d/ceph.repo && \
   echo "gpgkey=https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Storage" >> /etc/yum.repos.d/ceph.repo && \
   curl https://pulp.128-232-222-245.sslip.io/pulp/content/docker-ce/centos/8/x86_64/stable/20211122T102435/config.repo > /etc/yum.repos.d/docker.repo && \
-  echo "gpgkey=https://download.docker.com/linux/centos/gpg" >> /etc/yum.repos.d/docker.repo
-RUN curl https://linux.mellanox.com/public/repo/mlnx_ofed/5.6-1.0.3.3/rhel8.6/mellanox_mlnx_ofed.repo > /etc/yum.repos.d/mofed.repo
+  echo "gpgkey=https://download.docker.com/linux/centos/gpg" >> /etc/yum.repos.d/docker.repo && \
+  curl https://pulp.128-232-222-245.sslip.io/pulp/content/mlnx_ofed/5.7-1.0.2.0/rhel8.6/x86_64/20220920T151419/config.repo > /etc/yum.repos.d/mofed.repo && \
+  echo "gpgkey=https://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox" >> /etc/yum.repos.d/mofed.repo
 RUN dnf update -y
 
 # Install/remove packages from https://git.rockylinux.org/rocky/kickstarts/-/blob/r8/Rocky-8-GenericCloud.ks

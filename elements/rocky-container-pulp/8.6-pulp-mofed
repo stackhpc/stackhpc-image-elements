@@ -11,6 +11,10 @@ ARG rocky_version=8.6
 # final image.
 RUN systemd-machine-id-setup
 
+RUN curl -L https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Storage -o /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Storage\
+  && curl -L https://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox -o /etc/pki/rpm-gpg/RPM-GPG-KEY-Mellanox\
+  && curl -L https://download.docker.com/linux/centos/gpg -o /etc/pki/rpm-gpg/RPM-GPG-KEY-docker
+
 COPY <<Rocky-BaseOS.repo <<Rocky-Extras.repo <<Rocky-AppStream.repo <<Rocky-PowerTools.repo <<Rocky-NFV.repo <<ceph.repo <<docker.repo <<mofed.repo /etc/yum.repos.d/
 [baseos]
 name=Rocky Linux $releasever - BaseOS
@@ -58,7 +62,7 @@ enabled=1
 baseurl=https://pulp.128-232-222-245.sslip.io/pulp/content/centos/8/storage/x86_64/ceph-nautilus/20211122T102435/
 gpgcheck=1
 repo_gpgcheck=1
-gpgkey=https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Storage
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Storage
 ceph.repo
 [docker]
 name=docker-ce-for-centos-8-20211122T102435
@@ -66,7 +70,7 @@ enabled=1
 baseurl=https://pulp.128-232-222-245.sslip.io/pulp/content/docker-ce/centos/8/x86_64/stable/20211122T102435/
 gpgcheck=1
 repo_gpgcheck=1
-gpgkey=https://download.docker.com/linux/centos/gpg
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-docker
 docker.repo
 [mlnx_ofed]
 name=Mellanox Technologies rhel8.6-$basearch mlnx_ofed 5.7-1.0.2.0 GA
@@ -74,7 +78,7 @@ enabled=1
 baseurl=https://pulp.128-232-222-245.sslip.io/pulp/content/mlnx_ofed/5.7-1.0.2.0/rhel8.6/x86_64/20220920T151419/
 gpgcheck=1
 repo_gpgcheck=0
-gpgkey=https://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Mellanox
 mofed.repo
 
 RUN dnf update -y

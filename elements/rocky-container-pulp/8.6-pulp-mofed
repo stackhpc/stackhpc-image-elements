@@ -90,21 +90,7 @@ RUN dnf erase -y aic94xx-firmware alsa-firmware alsa-lib alsa-tools-firmware \
               iwl7260-firmware libertas-sd8686-firmware libertas-sd8787-firmware \
               libertas-usb8388-firmware biosdevname iprutils plymouth
 
-RUN curl -L https://www.mellanox.com/downloads/ofed/MLNX_OFED-5.7-1.0.2.0/MLNX_OFED_SRC-5.7-1.0.2.0.tgz --output /tmp/MLNX_OFED_SRC-5.7-1.0.2.0.tgz
-RUN cd /tmp && tar -xzf MLNX_OFED_SRC-5.7-1.0.2.0.tgz
-RUN dnf install -y perl
-RUN dnf install -y cmake kernel-devel python36-devel perl-generators python36 python3-Cython rpm-build elfutils-libelf-devel zlib-devel gcc-c++ gdb-headless glib2-devel patch lsof libmnl-devel openssl-devel pciutils-devel pkgconf-pkg-config libstdc++-devel libnl3-devel libtool python3-docutils numactl-devel systemd-devel kernel-rpm-macros glibc-devel pciutils gcc valgrind-devel
-RUN /tmp/MLNX_OFED_SRC-5.7-1.0.2.0/install.pl --hypervisor --kernel 4.18.0-372.26.1.el8_6.x86_64
-
-#RUN dnf -y install mlnx-ofed-hypervisor
 RUN dnf install -y cloud-init libvirt qemu-kvm ceph-common edk2-ovmf qemu-kvm-block-rbd cyrus-sasl docker-ce
-
-# Workaround for: Unable to find a system nic for <MAC_ADDRESS> from cloud-init
-# https://askubuntu.com/questions/1400527/unable-to-find-a-system-nic-while-running-cloud-init
-COPY <<delay.conf /etc/systemd/system/cloud-init-local.service.d
-[Service]
-ExecStartPre=sleep 30
-delay.conf
 
 # From the base dib element
 RUN dnf install -y findutils util-linux sudo python3 NetworkManager
@@ -112,6 +98,20 @@ RUN dnf install -y findutils util-linux sudo python3 NetworkManager
 RUN systemctl unmask console-getty.service dev-hugepages.mount \
     getty.target sys-fs-fuse-connections.mount systemd-logind.service \
     systemd-remount-fs.service
+
+RUN curl -L https://www.mellanox.com/downloads/ofed/MLNX_OFED-5.7-1.0.2.0/MLNX_OFED_SRC-5.7-1.0.2.0.tgz --output /tmp/MLNX_OFED_SRC-5.7-1.0.2.0.tgz \
+  && cd /tmp \
+  && tar -xzf MLNX_OFED_SRC-5.7-1.0.2.0.tgz \
+  && dnf install -y perl cmake kernel-devel python36-devel perl-generators python36 python3-Cython rpm-build elfutils-libelf-devel zlib-devel gcc-c++ gdb-headless glib2-devel patch lsof libmnl-devel openssl-devel pciutils-devel pkgconf-pkg-config libstdc++-devel libnl3-devel libtool python3-docutils numactl-devel systemd-devel kernel-rpm-macros glibc-devel pciutils gcc valgrind-devel \
+  && /tmp/MLNX_OFED_SRC-5.7-1.0.2.0/install.pl --hypervisor --kernel 4.18.0-372.26.1.el8_6.x86_64 \
+  && rm -rf /tmp/MLNX_OFED_SRC-5.7-1.0.2.0*
+
+# Workaround for: Unable to find a system nic for <MAC_ADDRESS> from cloud-init
+# https://askubuntu.com/questions/1400527/unable-to-find-a-system-nic-while-running-cloud-init
+COPY <<delay.conf /etc/systemd/system/cloud-init-local.service.d
+[Service]
+ExecStartPre=sleep 30
+delay.conf
 
 # Add hack because perftest in mofed conflicts and is older than rocky 8.6 version
 RUN dnf install python3-dnf-plugin-versionlock -y

@@ -75,7 +75,7 @@ docker.repo
 [mlnx_ofed]
 name=Mellanox Technologies rhel8.6-$basearch mlnx_ofed 5.7-1.0.2.0 GA
 enabled=1
-baseurl=http://linux.mellanox.com/public/repo/mlnx_ofed/5.7-1.0.2.0/rhel8.6/$basearch
+baseurl=https://linux.mellanox.com/public/repo/mlnx_ofed/5.7-1.0.2.0/rhel8.6/x86_64/
 gpgcheck=1
 repo_gpgcheck=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Mellanox

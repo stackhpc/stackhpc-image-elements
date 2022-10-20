@@ -21,7 +21,6 @@ qemu-guest-agent:
 dhcp-client:
 rocky-release:
 rng-tools:
-
 aic94xx-firmware:
   uninstall: true
 alsa-firmware:

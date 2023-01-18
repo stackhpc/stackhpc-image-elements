@@ -8,7 +8,7 @@ set -euo pipefail
 
 case "$DISTRO_NAME" in
     centos* | rhel* | rocky*)
-	dnf install -y elrepo-release.noarch
+	dnf install -y elrepo-release.noarch || dnf install -y https://www.elrepo.org/elrepo-release-$(awk '{print $NF}' /etc/redhat-release).el$(awk '{print $NF}' /etc/redhat-release).elrepo.noarch.rpm
 
 	if [ ${DIB_ELREPO_KERNEL:-0} -eq 1 ]; then
 

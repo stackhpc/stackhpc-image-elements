@@ -42,7 +42,8 @@ RUN dnf config-manager --set-enabled appstream crb && dnf install -y perl cmake 
   gcc-c++ gdb-headless glib2-devel patch lsof libmnl openssl-devel pciutils-devel \
   pkgconf-pkg-config libstdc++-devel libnl3-devel libtool numactl-devel \
   systemd-devel kernel-rpm-macros glibc-devel pciutils gcc valgrind-devel iptables-devel \
-  bison libdb-devel elfutils-devel tcsh binutils-devel flex gcc-gfortran 
+  bison libdb-devel elfutils-devel tcsh binutils-devel flex gcc-gfortran  \
+  python3-Cython python3-docutils libmnl-devel
 
 RUN curl -L https://content.mellanox.com/ofed/MLNX_OFED-5.8-1.1.2.1/MLNX_OFED_SRC-5.8-1.1.2.1.tgz --output /tmp/MLNX_OFED_SRC-5.8-1.1.2.1.tgz \
   && cd /tmp \

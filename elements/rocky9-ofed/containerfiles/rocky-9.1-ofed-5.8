@@ -37,7 +37,7 @@ RUN systemctl unmask console-getty.service dev-hugepages.mount \
 
 # Apply OFED installation
 # FIXME: the hardcoded kernel version should be dynamically deduced
-RUN dnf config-manager --set-enabled appstream && dnf install -y perl cmake kernel-devel \
+RUN dnf config-manager --set-enabled appstream crb && dnf install -y perl cmake kernel-devel \
   python3-devel perl-generators python3 rpm-build elfutils-libelf-devel zlib-devel \
   gcc-c++ gdb-headless glib2-devel patch lsof libmnl openssl-devel pciutils-devel \
   pkgconf-pkg-config libstdc++-devel libnl3-devel libtool numactl-devel \

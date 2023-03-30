@@ -2,6 +2,9 @@
 
 FROM docker.io/rockylinux/rockylinux:9.1
 
+# Pin to an older version of Rocky Linux by setting a DNF package variable
+RUN echo "9.1" > /etc/dnf/vars/releasever && dnf update -y --refresh
+
 RUN dnf install -y findutils util-linux sudo python3 NetworkManager
 
 RUN systemctl unmask console-getty.service dev-hugepages.mount \
@@ -13,15 +16,12 @@ RUN systemctl unmask console-getty.service dev-hugepages.mount \
 # final image.
 RUN systemd-machine-id-setup
 
-# Pin to an older version of Rocky Linux by setting a DNF package variable
-RUN echo "9.1" > /etc/dnf/vars/releasever && dnf update -y --refresh
-
 # Install/remove packages from https://git.rockylinux.org/rocky/kickstarts/-/blob/r8/Rocky-8-GenericCloud.ks
 RUN dnf install -y @core --allowerasing
 RUN dnf install -y chrony dnf yum cloud-init cloud-utils-growpart \
                 dracut-config-generic firewalld gdisk grub2 \
                 kernel nfs-utils rsync tar dnf-utils yum-utils \
-                python3-jsonschema qemu-guest-agent dhcp-client \
+                python3-jsonschema dhcp-client \
                 rocky-release rng-tools
 RUN dnf erase -y aic94xx-firmware alsa-firmware alsa-lib alsa-tools-firmware \
                ivtv-firmware iwl100-firmware iwl1000-firmware iwl105-firmware \
@@ -37,7 +37,7 @@ RUN systemctl unmask console-getty.service dev-hugepages.mount \
 
 # Apply OFED installation
 # FIXME: the hardcoded kernel version should be dynamically deduced
-RUN dnf config-manager --set-enabled powertools && dnf install -y perl cmake kernel-devel \
+RUN dnf config-manager --set-enabled appstream && dnf install -y perl cmake kernel-devel \
   python36-devel perl-generators python36 rpm-build elfutils-libelf-devel zlib-devel \
   gcc-c++ gdb-headless glib2-devel patch lsof libmnl-devel openssl-devel pciutils-devel \
   pkgconf-pkg-config libstdc++-devel libnl3-devel libtool python3-docutils numactl-devel \

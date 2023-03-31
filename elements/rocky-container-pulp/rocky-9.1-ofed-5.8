@@ -1,0 +1,52 @@
+# syntax=docker/dockerfile:1.4.3
+
+FROM docker.io/rockylinux/rockylinux:9.1
+
+# Pin to an older version of Rocky Linux by setting a DNF package variable
+RUN echo "9.1" > /etc/dnf/vars/releasever && dnf update -y --refresh
+
+RUN dnf install -y findutils util-linux sudo python3 NetworkManager
+
+RUN systemctl unmask console-getty.service dev-hugepages.mount \
+    getty.target sys-fs-fuse-connections.mount systemd-logind.service \
+    systemd-remount-fs.service
+
+# /etc/machine-id needs to be populated for /bin/kernel-install to
+# correctly copy kernels into /boot.  We will clear this out in the
+# final image.
+RUN systemd-machine-id-setup
+
+# Install/remove packages from https://git.rockylinux.org/rocky/kickstarts/-/blob/r8/Rocky-8-GenericCloud.ks
+RUN dnf install -y @core --allowerasing
+RUN dnf install -y chrony dnf yum cloud-init cloud-utils-growpart \
+                dracut-config-generic firewalld gdisk grub2 \
+                kernel nfs-utils rsync tar dnf-utils yum-utils \
+                python3-jsonschema dhcp-client \
+                rocky-release rng-tools
+RUN dnf erase -y aic94xx-firmware alsa-firmware alsa-lib alsa-tools-firmware \
+               ivtv-firmware iwl100-firmware iwl1000-firmware iwl105-firmware \
+               iwl135-firmware iwl2000-firmware iwl2030-firmware iwl3160-firmware \
+               iwl3945-firmware iwl4965-firmware iwl5000-firmware iwl5150-firmware \
+               iwl6000-firmware iwl6000g2a-firmware iwl6000g2b-firmware iwl6050-firmware \
+               iwl7260-firmware libertas-sd8686-firmware libertas-sd8787-firmware \
+               libertas-usb8388-firmware biosdevname iprutils plymouth
+
+RUN systemctl unmask console-getty.service dev-hugepages.mount \
+    getty.target sys-fs-fuse-connections.mount systemd-logind.service \
+    systemd-remount-fs.service
+
+# Apply OFED installation
+# FIXME: the hardcoded kernel version should be dynamically deduced
+RUN dnf config-manager --set-enabled appstream crb && dnf install -y perl cmake kernel-devel \
+  python3-devel perl-generators python3 rpm-build elfutils-libelf-devel zlib-devel \
+  gcc-c++ gdb-headless glib2-devel patch lsof libmnl openssl-devel pciutils-devel \
+  pkgconf-pkg-config libstdc++-devel libnl3-devel libtool numactl-devel \
+  systemd-devel kernel-rpm-macros glibc-devel pciutils gcc valgrind-devel iptables-devel \
+  bison libdb-devel elfutils-devel tcsh binutils-devel flex gcc-gfortran  \
+  python3-Cython python3-docutils libmnl-devel
+
+RUN curl -L https://content.mellanox.com/ofed/MLNX_OFED-5.8-1.1.2.1/MLNX_OFED_SRC-5.8-1.1.2.1.tgz --output /tmp/MLNX_OFED_SRC-5.8-1.1.2.1.tgz \
+  && cd /tmp \
+  && tar -xzf MLNX_OFED_SRC-5.8-1.1.2.1.tgz \
+  && /tmp/MLNX_OFED_SRC-5.8-1.1.2.1/install.pl --basic --kernel $(cd /lib/modules && ls -t1 | head -n 1) \
+  && rm -rf /tmp/MLNX_OFED_SRC-5.8-1.1.2.1*

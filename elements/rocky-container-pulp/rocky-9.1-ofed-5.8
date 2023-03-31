@@ -22,7 +22,7 @@ RUN dnf install -y chrony dnf yum cloud-init cloud-utils-growpart \
                 dracut-config-generic firewalld gdisk grub2 \
                 kernel nfs-utils rsync tar dnf-utils yum-utils \
                 python3-jsonschema dhcp-client \
-                rocky-release rng-tools
+                rocky-release rng-tools initscripts
 RUN dnf erase -y aic94xx-firmware alsa-firmware alsa-lib alsa-tools-firmware \
                ivtv-firmware iwl100-firmware iwl1000-firmware iwl105-firmware \
                iwl135-firmware iwl2000-firmware iwl2030-firmware iwl3160-firmware \

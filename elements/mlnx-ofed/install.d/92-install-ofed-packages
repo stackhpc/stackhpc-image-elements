@@ -14,8 +14,9 @@ fi
 
 if [ -d /etc/apt/sources.list.d ] ; then
  apt-get update
- apt-get -y install linux-headers-generic libc-dev build-essential
- apt-get -y install $MLNX_OFED_PKGLIST
+#  apt-get -y install linux-headers-generic libc-dev build-essential
+#  ./tmp/MLNX-OFED-$MLNX_OFED_VERSION/MLNX_OFED_SRC-$MLNX_OFED_VERSION/install.pl --all
+ sudo RUNLEVEL=1 apt-get -y install $MLNX_OFED_PKGLIST
  echo "running automatic fix, based on issues in version 4.1-1.0.2.0 & 2.0-1.0.0.0"
  if [ "$DIB_MLNX_OFED_VERSION" = "4.2-1.0.0.0" ] || [ "$DIB_MLNX_OFED_VERSION" = "4.1-1.0.2.0" ]; then
   for kernel in $(ls /usr/src/ | grep linux-headers);do

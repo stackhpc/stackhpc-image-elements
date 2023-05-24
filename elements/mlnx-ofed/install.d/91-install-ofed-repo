@@ -20,8 +20,14 @@ fi
 
 if [ -d /etc/apt/sources.list.d ] ; then
 cat > /etc/apt/sources.list.d/mlnx_ofed.list << EOF
-deb $MLNX_OFED_REPO/DEBS ./
+deb [signed-by=/etc/apt/keyrings/RPM-GPG-KEY-Mellanox.gpg] $MLNX_OFED_REPO ./
 EOF
-wget -qO - $MLNX_OFED_REPO/RPM-GPG-KEY-Mellanox | sudo apt-key add -
+sudo mkdir -p /etc/apt/keyrings/
+wget -qO - https://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox | gpg --dearmor -o /etc/apt/keyrings/RPM-GPG-KEY-Mellanox.gpg
+# wget $MLNX_OFED_REPO -O /tmp/MLNX-OFED-$MLNX_OFED_VERSION.tgz
+# mkdir /tmp/MLNX-OFED-$MLNX_OFED_VERSION
+# tar -vxzf /tmp/MLNX-OFED-$MLNX_OFED_VERSION.tgz -C /tmp/MLNX-OFED-$MLNX_OFED_VERSION
+# chmod +x /tmp/MLNX-OFED-$MLNX_OFED_VERSION/MLNX_OFED_SRC-$MLNX_OFED_VERSION/install.pl
+
 fi
 

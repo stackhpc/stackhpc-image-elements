@@ -11,4 +11,6 @@ then
     rm -f /etc/yum.repos.d/MLNX-OFED.repo
 fi
 
-service sharpd stop
+if systemctl is-active sharpd; then
+   systemctl stop sharpd
+fi

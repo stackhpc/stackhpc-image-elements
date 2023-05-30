@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+
+set -euo pipefail
+
+case "$DISTRO_NAME" in
+    centos* | rhel* | rocky*)
+    	rpm -q dnf-plugins-core || dnf install -y dnf-plugins-core
+	for repo in ${DIB_EXTRA_REPOS:-}; do
+	  dnf config-manager --add-repo "$repo"
+	done
+	;;
+    *)
+	echo "Distro \"$DISTRO_NAME\" is not supported"
+	exit 1
+	;;
+esac
+
+exit 0

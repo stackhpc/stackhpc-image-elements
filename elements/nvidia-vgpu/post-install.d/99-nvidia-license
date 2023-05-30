@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+mkdir -p /etc/nvidia/ClientConfigToken/ || echo "Directory: /etc/nvidia/ClientConfigToken/ already exists, skipping"
+printf "$NVIDIA_VGPU_CLIENT_TOKEN" >> /etc/nvidia/ClientConfigToken/client.tok
+
+sed -i 's/^FeatureType.*$/FeatureType=1/' /etc/nvidia/gridd.conf

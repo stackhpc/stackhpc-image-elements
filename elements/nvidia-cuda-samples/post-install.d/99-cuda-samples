@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+cd /opt
+git clone https://github.com/NVIDIA/cuda-samples
+cd cuda-samples
+git checkout "${DIB_NVIDIA_CUDA_SAMPLES_VERSION:-master}"
+make

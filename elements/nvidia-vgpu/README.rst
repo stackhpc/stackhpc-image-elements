@@ -12,4 +12,4 @@ For example:
 
   .. code-block::
 
-   export DIB_NVIDIA_VGPU_CLIENT_TOKEN="{{ lookup('file', 'path/to/token/downloaded/from/license/server') }}'
+   export DIB_NVIDIA_VGPU_CLIENT_TOKEN="{{ lookup('file', 'path/to/token/downloaded/from/license/server') }}"

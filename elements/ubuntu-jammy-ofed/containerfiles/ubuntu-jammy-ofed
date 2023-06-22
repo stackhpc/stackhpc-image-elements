@@ -1,0 +1,40 @@
+# syntax=docker/dockerfile:1.4.3
+
+FROM docker.io/ubuntu:jammy
+
+RUN apt update -y
+RUN apt-get install -y findutils util-linux sudo python3 systemd
+
+# /etc/machine-id needs to be populated for /bin/kernel-install to correctly
+# copy kernels into /boot.  We will clear this out in the final image. This step
+# may not be necessary for ubuntu, but is retained from the rocky variant
+RUN systemd-machine-id-setup
+
+RUN systemctl unmask console-getty.service dev-hugepages.mount \
+    getty.target sys-fs-fuse-connections.mount systemd-logind.service \
+    systemd-remount-fs.service
+
+# Apply OFED installation
+# FIXME: the hardcoded kernel version should be dynamically deduced
+RUN apt-get install -y curl dkms perl cmake linux-headers-generic \
+  python3-dev python3 linux-generic zlib1g-dev \
+  build-essential libglib2.0-dev patch lsof libmnl-dev openssl pciutils \
+  libstdc++-10-dev libnl-3-dev libtool libnuma-dev \
+  libsystemd-dev pciutils gcc valgrind iptables \
+  bison libdb-dev tcsh binutils-dev flex gfortran  \
+  python3-docutils devscripts libselinux1-dev libusb-1.0-0-dev dh-python \
+  libssl-dev make libfuse-dev python3-distutils fakeroot gcc libpci-dev \
+  pkg-config libnl-route-3-dev debhelper pandoc python3-dev libelf-dev \
+  autotools-dev cython3 quilt libudev-dev autoconf
+
+# RUN curl -L https://www.mellanox.com/downloads/ofed/MLNX_OFED-23.04-1.1.3.0/MLNX_OFED_SRC-debian-23.04-1.1.3.0.tgz --output /tmp/MLNX_OFED_SRC-23.04-1.1.3.0.tgz \
+#   && cd /tmp \
+#   && tar -xzf MLNX_OFED_SRC-23.04-1.1.3.0.tgz \
+#   && /tmp/MLNX_OFED_SRC-23.04-1.1.3.0/install.pl --basic --kernel $(cd /lib/modules && ls -t1 | head -n 1) --force \
+#   && rm -rf /tmp/MLNX_OFED_SRC-23.04-1.1.3.0*
+
+RUN curl -L https://content.mellanox.com/ofed/MLNX_OFED-DIB_MLNX_OFED_VERSION/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION.tgz --output /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION.tgz \
+  && cd /tmp \
+  && tar -xzf MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION.tgz \
+  && /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION/install.pl --basic --kernel $(cd /lib/modules && ls -t1 | head -n 1) \
+  && rm -rf /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION*

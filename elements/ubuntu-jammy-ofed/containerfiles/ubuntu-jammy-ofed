@@ -15,7 +15,6 @@ RUN systemctl unmask console-getty.service dev-hugepages.mount \
     systemd-remount-fs.service
 
 # Apply OFED installation
-# FIXME: the hardcoded kernel version should be dynamically deduced
 RUN apt-get install -y curl dkms perl cmake linux-headers-generic \
   python3-dev python3 linux-generic zlib1g-dev \
   build-essential libglib2.0-dev patch lsof libmnl-dev openssl pciutils \
@@ -27,14 +26,8 @@ RUN apt-get install -y curl dkms perl cmake linux-headers-generic \
   pkg-config libnl-route-3-dev debhelper pandoc python3-dev libelf-dev \
   autotools-dev cython3 quilt libudev-dev autoconf
 
-# RUN curl -L https://www.mellanox.com/downloads/ofed/MLNX_OFED-23.04-1.1.3.0/MLNX_OFED_SRC-debian-23.04-1.1.3.0.tgz --output /tmp/MLNX_OFED_SRC-23.04-1.1.3.0.tgz \
-#   && cd /tmp \
-#   && tar -xzf MLNX_OFED_SRC-23.04-1.1.3.0.tgz \
-#   && /tmp/MLNX_OFED_SRC-23.04-1.1.3.0/install.pl --basic --kernel $(cd /lib/modules && ls -t1 | head -n 1) --force \
-#   && rm -rf /tmp/MLNX_OFED_SRC-23.04-1.1.3.0*
-
-RUN curl -L https://content.mellanox.com/ofed/MLNX_OFED-DIB_MLNX_OFED_VERSION/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION.tgz --output /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION.tgz \
+RUN curl -L https://content.mellanox.com/ofed/MLNX_OFED-DIB_MLNX_OFED_VERSION/MLNX_OFED_SRC-debian-DIB_MLNX_OFED_VERSION.tgz --output /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION.tgz \
   && cd /tmp \
   && tar -xzf MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION.tgz \
-  && /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION/install.pl --basic --kernel $(cd /lib/modules && ls -t1 | head -n 1) \
+  && /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION/install.pl --basic --kernel $(cd /lib/modules && ls -t1 | head -n 1) --force \
   && rm -rf /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION*

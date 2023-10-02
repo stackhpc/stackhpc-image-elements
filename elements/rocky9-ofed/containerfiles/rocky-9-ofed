@@ -48,5 +48,5 @@ RUN dnf config-manager --set-enabled appstream crb && dnf install -y perl cmake 
 RUN curl -L https://content.mellanox.com/ofed/MLNX_OFED-DIB_MLNX_OFED_VERSION/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION.tgz --output /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION.tgz \
   && cd /tmp \
   && tar -xzf MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION.tgz \
-  && /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION/install.pl --basic --kernel $(cd /lib/modules && ls -t1 | head -n 1) \
+  && /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION/install.pl --kernel $(cd /lib/modules && ls -t1 | head -n 1) DIB_MLNX_OFED_INSTALL_ARGS \
   && rm -rf /tmp/MLNX_OFED_SRC-DIB_MLNX_OFED_VERSION*

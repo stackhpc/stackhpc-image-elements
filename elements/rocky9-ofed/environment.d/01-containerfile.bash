@@ -5,5 +5,5 @@ then
     path="$( dirname $path)"
     export DIB_CONTAINERFILE_DOCKERFILE="$path/containerfiles/rocky-9-ofed"
     sed -i 's/DIB_MLNX_OFED_VERSION/'"$DIB_MLNX_OFED_VERSION"'/g' $DIB_CONTAINERFILE_DOCKERFILE || true
+    sed -i 's/DIB_MLNX_OFED_INSTALL_ARGS/'"${DIB_MLNX_OFED_INSTALL_ARGS:---hypervisor}"'/g' $DIB_CONTAINERFILE_DOCKERFILE || true
 fi
-

@@ -30,3 +30,4 @@ This repository provides the following DIB elements:
 * ``centos-linkup-extra``: Allows extra time for slow network links to come up.
 * ``centos7-vault``: Deploy older releases of CentOS 7
 * ``cloud-init-growpart-lvm``: Grows designated LVM partition.
+* ``rocky-container-stackhpc``: Custom containerfiles for usage with rocky-container element builds

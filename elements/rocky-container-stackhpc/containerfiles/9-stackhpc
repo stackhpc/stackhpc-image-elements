@@ -1,10 +1,24 @@
 # Based on https://github.com/openstack/diskimage-builder/blob/master/diskimage_builder/elements/rocky-container/containerfiles/9
 
 FROM docker.io/rockylinux/rockylinux:9
+ARG ROCKY_USE_MIRROR=false
+ARG ROCKY_APPSTREAM_URL
+ARG ROCKY_BASEOS_URL
+
+RUN if [ ${ROCKY_USE_MIRROR} = "true" ]; then \
+    dnf -y install 'dnf-command(config-manager)' && \
+    mkdir /tmp/orig_repos && mv -f /etc/yum.repos.d/* /tmp/orig_repos/ && \
+    dnf config-manager --add-repo ${ROCKY_APPSTREAM_URL} && \
+    dnf config-manager --add-repo ${ROCKY_BASEOS_URL} && \
+    dnf -y distro-sync; fi
 
 RUN dnf group install -y 'Minimal Install' --allowerasing && \
     dnf install -y findutils util-linux \
     https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/Packages/cloud-init-23.1.1-12.el9.noarch.rpm
+
+RUN rm -f /etc/yum.repos.d/stackhpc.repo && \
+    mv -f /tmp/orig_repos/* /etc/yum.repos.d/ && \
+    rmdir /tmp/orig_repos
 
 RUN sed -i "s/renderers:.*/renderers: ['network-manager']\n      activators: ['network-manager']/" /etc/cloud/cloud.cfg
 

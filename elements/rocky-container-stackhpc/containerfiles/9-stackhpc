@@ -16,7 +16,7 @@ RUN dnf group install -y 'Minimal Install' --allowerasing && \
     dnf install -y findutils util-linux \
     https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/Packages/cloud-init-23.1.1-12.el9.noarch.rpm
 
-RUN rm -f /etc/yum.repos.d/stackhpc.repo && \
+RUN rm -f /etc/yum.repos.d/* && \
     mv -f /tmp/orig_repos/* /etc/yum.repos.d/ && \
     rmdir /tmp/orig_repos
 

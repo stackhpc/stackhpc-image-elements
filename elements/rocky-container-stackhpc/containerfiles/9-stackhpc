@@ -7,18 +7,16 @@ ARG ROCKY_BASEOS_URL
 
 RUN if [ ${ROCKY_USE_MIRROR} = "true" ]; then \
     dnf -y install 'dnf-command(config-manager)' && \
+    dnf clean all && \
     mkdir /tmp/orig_repos && mv -f /etc/yum.repos.d/* /tmp/orig_repos/ && \
     dnf config-manager --add-repo ${ROCKY_APPSTREAM_URL} && \
     dnf config-manager --add-repo ${ROCKY_BASEOS_URL} && \
-    dnf -y distro-sync; fi
+    dnf -y distro-sync && \
+    rm -f /etc/yum.repos.d/rocky*.repo; fi
 
 RUN dnf group install -y 'Minimal Install' --allowerasing && \
     dnf install -y findutils util-linux \
     https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/Packages/cloud-init-23.1.1-12.el9.noarch.rpm
-
-RUN rm -f /etc/yum.repos.d/* && \
-    mv -f /tmp/orig_repos/* /etc/yum.repos.d/ && \
-    rmdir /tmp/orig_repos
 
 RUN sed -i "s/renderers:.*/renderers: ['network-manager']\n      activators: ['network-manager']/" /etc/cloud/cloud.cfg
 

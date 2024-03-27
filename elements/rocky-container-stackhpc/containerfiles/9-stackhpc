@@ -6,7 +6,7 @@ RUN dnf group install -y 'Minimal Install' --allowerasing --excludepkgs grub* &&
     dnf install -y findutils util-linux \
     https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/Packages/cloud-init-23.4-7.el9.noarch.rpm
 
-RUN sed -i "s/renderers:.*/renderers: ['network-manager']\n      activators: ['network-manager']/" /etc/cloud/cloud.cfg
+RUN sed -i "s/renderers:.*/{renderers: ['network-manager'], activators: ['network-manager'] }/" /etc/cloud/cloud.cfg
 
 RUN systemctl unmask console-getty.service dev-hugepages.mount \
     getty.target sys-fs-fuse-connections.mount systemd-logind.service \

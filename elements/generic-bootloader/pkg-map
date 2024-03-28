@@ -1,0 +1,57 @@
+{
+  "family": {
+    "gentoo": {
+      "dkms_package": "",
+      "extlinux": "syslinux",
+      "grub-pc": "grub",
+      "grub-efi": "grub",
+      "grub-efi-amd64": "",
+      "grub-efi-arm64": "",
+      "grub-efi-aarch64": ""
+    },
+    "suse": {
+      "dkms_package": "",
+      "extlinux": "syslinux",
+      "grub-pc": "grub2",
+      "grub-efi": "grub2",
+      "grub-efi-amd64": "grub2-x86_64-efi"
+    },
+    "redhat": {
+      "extlinux": "syslinux-extlinux",
+      "grub-pc": "grub2-tools grub2",
+      "grub-ppc64": "grub2-tools grub2",
+      "grub-efi": "grub2-tools grub2 efibootmgr",
+      "grub-efi-amd64": "grub2-efi-x64 grub2-efi-x64-modules shim-x64",
+      "grub-efi-x86_64": "grub2-efi-x64 grub2-efi-x64-modules shim-x64",
+      "grub-efi-arm64": "grub2-efi-aa64 grub2-efi-aa64-modules shim-aa64",
+      "grub-efi-aarch64": "grub2-efi-aa64 grub2-efi-aa64-modules shim-aa64"
+    }
+  },
+  "release": {
+    "rhel": {
+      "9": {
+        "grub-efi-amd64": "grub2-efi-x64 shim-x64",
+        "grub-efi-x86_64": "grub2-efi-x64 shim-x64",
+        "grub-efi-arm64": "grub2-efi-aa64 shim-aa64",
+        "grub-efi-aarch64": "grub2-efi-aa64 shim-aa64"
+      }
+    },
+    "centos": {
+      "9": {
+        "grub-efi-amd64": "grub2-efi-x64 shim-x64",
+        "grub-efi-x86_64": "grub2-efi-x64 shim-x64",
+        "grub-efi-arm64": "grub2-efi-aa64 shim-aa64",
+        "grub-efi-aarch64": "grub2-efi-aa64 shim-aa64"
+      }
+    }
+  },
+  "default": {
+    "dkms_package": "dkms",
+    "extlinux": "extlinux",
+    "grub-pc": "grub-pc",
+    "grub-efi": "efibootmgr",
+    "grub-efi-amd64": "grub-efi grub-pc-bin",
+    "grub-efi-arm64": "grub-efi-arm64 grub-efi-arm64-bin",
+    "grub-ppc64": "grub-ieee1275"
+  }
+}

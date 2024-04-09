@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [[ "amd64 x86_64 arm64 aarch64" =~ "$ARCH" ]]; then
+  if [[ "amd64" =~ "$ARCH" ]]; then
+    echo 'Setting ARCH to x86_64'
+    ARCH="x86_64"
+  elif [[ "arm64" =~ "$ARCH" ]]; then
+    echo 'Setting ARCH to aarch64'
+    ARCH="aarch64"
+  fi
+else
+  echo 'mlnxofedinstall element only supports the amd64, x86_64, arm64 and aarch64 values for $ARCH'
+  exit 1
+fi
+
+export MLNX_OFED_VERSION=${DIB_MLNX_OFED_VERSION:?"A version of OFED is required e.g. '23.10-2.1.3.1'"}
+export MLNX_OFED_OS_DISTRIBUTION=${DIB_MLNX_OFED_OS_DISTRIBUTION:?"An OFED OS distribution is required e.g. 'rhel9.3'"}
+export MLNX_OFED_INSTALL_ARGS=${DIB_MLNX_OFED_INSTALL_ARGS:-"--hypervisor --skip-repo"}
+

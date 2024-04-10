@@ -2,7 +2,7 @@
 
 FROM docker.io/rockylinux/rockylinux:9
 
-RUN dnf group install -y 'Minimal Install' --allowerasing && \
+RUN dnf group install -y 'Minimal Install' --allowerasing --excludepkgs grub* && \
     dnf install -y findutils util-linux \
     https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/Packages/cloud-init-23.4-7.el9.noarch.rpm
 

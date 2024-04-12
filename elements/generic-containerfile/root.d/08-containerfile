@@ -1,0 +1,102 @@
+#!/bin/bash
+#
+# Copyright 2015 Hewlett-Packard Development Company, L.P.
+# Copyright 2019 Red Hat, INC.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+: "${DIB_CONTAINERFILE_RUNTIME:=podman}"
+
+# Convert the old value which was podman specific
+if [[ "${DIB_CONTAINERFILE_PODMAN_ROOT:-0}" != '0' ]]; then
+    DIB_CONTAINERFILE_RUNTIME_ROOT=1
+fi
+
+# NOTE(ianw) 2022-12-15 : this used to be left blank, but we've found
+# with current podman this is the only reliable way to get networking
+# in the container we're building (needed for yum update, package
+# install, etc.).  It's less secure, but we're already running in a
+# priviledged container ...
+if [[ -z "${DIB_CONTAINERFILE_NETWORK_DRIVER:-}"  ]]; then
+    DIB_CONTAINERFILE_RUNTIME_NETWORK="--network host"
+else
+    DIB_CONTAINERFILE_RUNTIME_NETWORK="--network ${DIB_CONTAINERFILE_NETWORK_DRIVER:-}"
+fi
+
+if [ -f ${TARGET_ROOT}/.extra_settings ] ; then
+    . ${TARGET_ROOT}/.extra_settings
+fi
+
+if [ -z "${DIB_CONTAINERFILE_DOCKERFILE:-}" ]; then
+    _xtrace=$(set +o | grep xtrace)
+    set +o xtrace
+
+    eval declare -A image_elements=($(get_image_element_array))
+
+    for i in "${!image_elements[@]}"; do
+        element=$i
+        element_dir=${image_elements[$i]}
+
+        containerfile="${element_dir}/containerfiles/${DIB_RELEASE}"
+        if [ -f "${containerfile}" ]; then
+            echo "Found container file ${containerfile}"
+            DIB_CONTAINERFILE_DOCKERFILE="${containerfile}"
+            break
+        fi
+    done
+
+    $_xtrace
+
+    if [ -z "${DIB_CONTAINERFILE_DOCKERFILE:-}" ]; then
+        echo "*** DIB_CONTAINERFILE_DOCKERFILE not specified or found!"
+        exit 1
+    fi
+fi
+
+# Use the image cache directory as the default context, so anything
+# there is automatically available for COPY commands.
+DIB_CONTAINER_CONTEXT=${DIB_CONTAINER_CONTEXT:-${DIB_IMAGE_CACHE}/containerfile}
+
+mkdir -p $DIB_CONTAINER_CONTEXT
+
+if [[ ${DIB_CONTAINERFILE_RUNTIME_ROOT:-0} -gt 0 ]]; then
+    _sudo="sudo"
+else
+    _sudo=""
+fi
+
+_podman_build_image="dib-tmp-work-image-$RANDOM"
+_podman_export_container="dib-tmp-export-$RANDOM"
+
+function podman_cleanup() {
+    echo "Cleaning up container ${_podman_export_container}"
+    ${_sudo} ${DIB_CONTAINERFILE_RUNTIME} rm ${_podman_export_container} || true
+    echo "Cleaning up build image ${_podman_build_image}"
+    ${_sudo} ${DIB_CONTAINERFILE_RUNTIME} rmi ${_podman_build_image} || true
+}
+
+trap "podman_cleanup" EXIT
+
+${_sudo} ${DIB_CONTAINERFILE_RUNTIME} build ${DIB_CONTAINERFILE_RUNTIME_NETWORK} -t ${_podman_build_image} -f $DIB_CONTAINERFILE_DOCKERFILE ${DIB_CONTAINERFILE_BUILDOPTS:-} $DIB_CONTAINER_CONTEXT
+${_sudo} ${DIB_CONTAINERFILE_RUNTIME} run ${DIB_CONTAINERFILE_RUNTIME_NETWORK} --name ${_podman_export_container} -d ${_podman_build_image} /bin/sh
+# NOTE(ianw) 2021-11-10 the tar must always be sudo to write out the chroot files
+# as other uids
+${_sudo} ${DIB_CONTAINERFILE_RUNTIME} export ${_podman_export_container} | sudo tar -C $TARGET_ROOT --numeric-owner -xf -
+
+sudo rm -f ${TARGET_ROOT}/.extra_settings

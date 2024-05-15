@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+cd /tmp
+
+curl -L https://content.mellanox.com/ofed/MLNX_OFED-${MLNX_OFED_VERSION}/MLNX_OFED_LINUX-${MLNX_OFED_VERSION}-${MLNX_OFED_OS_DISTRIBUTION}-${ARCH}.tgz |\
+tar -xz
+
+/tmp/MLNX_OFED_LINUX-${MLNX_OFED_VERSION}-${MLNX_OFED_OS_DISTRIBUTION}-${ARCH}/mlnxofedinstall \
+--kernel $(ls -t1 /lib/modules | head -n 1) \
+--add-kernel-support \
+${MLNX_OFED_INSTALL_ARGS} || true
+
+rm -rf /tmp/MLNX_OFED*

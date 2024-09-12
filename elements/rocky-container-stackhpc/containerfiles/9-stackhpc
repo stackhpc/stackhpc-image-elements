@@ -3,7 +3,8 @@
 FROM docker.io/rockylinux/rockylinux:9
 
 RUN dnf group install -y 'Minimal Install' --allowerasing && \
-    dnf install -y findutils util-linux cloud-init
+    dnf install -y findutils util-linux \
+    https://dl.rockylinux.org/pub/rocky/9/devel/aarch64/os/Packages/c/cloud-init-23.4-7.el9_4.6.0.1.noarch.rpm
 
 RUN sed -i "s/renderers:.*/renderers: ['network-manager']\n      activators: ['network-manager']/" /etc/cloud/cloud.cfg
 

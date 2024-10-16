@@ -7,3 +7,4 @@ set -eu
 set -o pipefail
 
 printf "$NM_DISPATCHER_CONTENT" >> /etc/NetworkManager/dispatcher.d/$NM_DISPATCHER_FILENAME
+chmod +x /etc/NetworkManager/dispatcher.d/$NM_DISPATCHER_FILENAME

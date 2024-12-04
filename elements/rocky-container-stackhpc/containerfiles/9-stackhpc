@@ -1,6 +1,18 @@
 # Based on https://github.com/openstack/diskimage-builder/blob/master/diskimage_builder/elements/rocky-container/containerfiles/9
 
 FROM docker.io/rockylinux/rockylinux:9
+ARG ROCKY_USE_MIRROR=false
+ARG ROCKY_APPSTREAM_URL
+ARG ROCKY_BASEOS_URL
+
+RUN if [ ${ROCKY_USE_MIRROR} = "true" ]; then \
+    dnf -y install 'dnf-command(config-manager)' && \
+    dnf clean all && \
+    mkdir /tmp/orig_repos && mv -f /etc/yum.repos.d/* /tmp/orig_repos/ && \
+    dnf config-manager --add-repo ${ROCKY_APPSTREAM_URL} && \
+    dnf config-manager --add-repo ${ROCKY_BASEOS_URL} && \
+    dnf -y distro-sync && \
+    rm -f /etc/yum.repos.d/rocky*.repo; fi
 
 RUN dnf group install -y 'Minimal Install' --allowerasing && \
     dnf install -y findutils util-linux cloud-init

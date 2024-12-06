@@ -7,6 +7,9 @@ RUN dnf group install -y 'Minimal Install' --allowerasing && \
 
 RUN sed -i "s/renderers:.*/renderers: ['network-manager']\n    activators: ['network-manager']/" /etc/cloud/cloud.cfg
 
+RUN sed -i '/^GRUB_HIDDEN_TIMEOUT_QUIET=/s/.*/GRUB_HIDDEN_TIMEOUT_QUIET=false/' /etc/default/grub \
+    sed -i '/^GRUB_TIMEOUT=/s/.*/GRUB_TIMEOUT=5/' etc/default/grub
+
 RUN systemctl unmask console-getty.service dev-hugepages.mount \
     getty.target sys-fs-fuse-connections.mount systemd-logind.service \
     systemd-remount-fs.service

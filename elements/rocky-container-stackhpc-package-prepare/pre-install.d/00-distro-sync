@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+dnf distro-sync -y --allowerasing
+dnf group install -y 'Minimal Install' --allowerasing
+dnf install -y findutils \
+               util-linux \
+               sudo

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+systemctl unmask \
+console-getty.service \
+dev-hugepages.mount \
+getty.target \
+sys-fs-fuse-connections.mount \
+systemd-logind.service \
+systemd-remount-fs.service

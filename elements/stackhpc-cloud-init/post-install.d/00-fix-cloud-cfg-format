@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+cat << EOF > /etc/cloud/cloud.cfg.d/10-NetworkManager.cfg
+system_info:
+  activators:
+    - "network-manager"
+
+merge_type: 'dict(recurse_array)'
+EOF

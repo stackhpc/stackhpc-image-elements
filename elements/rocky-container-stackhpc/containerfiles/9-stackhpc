@@ -5,7 +5,14 @@ FROM docker.io/rockylinux/rockylinux:9
 RUN dnf group install -y 'Minimal Install' --allowerasing && \
     dnf install -y findutils util-linux cloud-init
 
-RUN sed -i "s/renderers:.*/renderers: ['network-manager']\n    activators: ['network-manager']/" /etc/cloud/cloud.cfg
+COPY <<EOF /etc/cloud/cloud.cfg.d/10-NetworkManager.cfg
+---
+system_info:
+  activators:
+    - "network-manager"
+
+merge_type: 'dict(recurse_array)'
+EOF
 
 RUN systemctl unmask console-getty.service dev-hugepages.mount \
     getty.target sys-fs-fuse-connections.mount systemd-logind.service \

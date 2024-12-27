@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# Ensure apt doesn't verify the certificate issuer
+sudo mkdir -p ${TARGET_ROOT}/etc/apt/apt.conf.d/ # dib-lint: safe_sudo
+echo 'Acquire::https::Verify-Peer "false";' |\
+  sudo tee ${TARGET_ROOT}/etc/apt/apt.conf.d/90no-verify-peer > /dev/null # dib-lint: safe_sudo

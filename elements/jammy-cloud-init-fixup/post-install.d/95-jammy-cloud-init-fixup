@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Ensure that cloud-init-local requires /var/lib/cloud to be mounted
+cat > /etc/systemd/system/cloud-init-local.service <<EOF
+[Unit]
+RequiresMountsFor=/var/lib/cloud
+EOF
+
+echo "Applied fixup for cloud-init-local"

@@ -1,11 +1,30 @@
 # Based on https://github.com/openstack/diskimage-builder/blob/master/diskimage_builder/elements/rocky-container/containerfiles/9
 
 FROM docker.io/rockylinux/rockylinux:9
+ARG ROCKY_USE_CUSTOM_DNF_MIRRORS="false"
+# Comma-delimited list of repo URLs
+ARG ROCKY_CUSTOM_DNF_MIRROR_URLS
+
+RUN if [[ ${ROCKY_USE_CUSTOM_DNF_MIRRORS} != "false" ]]; then \
+      dnf -y install 'dnf-command(config-manager)' && \
+      mkdir /tmp/orig_repos && mv /etc/yum.repos.d/*.repo /tmp/orig_repos/ && \
+      for REPO_URL in $(echo ${ROCKY_CUSTOM_DNF_MIRROR_URLS} | sed 's/,/ /g'); do \
+        dnf config-manager --add-repo ${REPO_URL}; \
+      done && \
+      dnf --allowerasing -y distro-sync; \
+    fi
 
 RUN dnf group install -y 'Minimal Install' --allowerasing && \
     dnf install -y findutils util-linux cloud-init
 
-RUN sed -i "s/renderers:.*/renderers: ['network-manager']\n    activators: ['network-manager']/" /etc/cloud/cloud.cfg
+COPY <<EOF /etc/cloud/cloud.cfg.d/10-NetworkManager.cfg
+---
+system_info:
+  activators:
+    - "network-manager"
+
+merge_type: 'dict(recurse_array)'
+EOF
 
 RUN systemctl unmask console-getty.service dev-hugepages.mount \
     getty.target sys-fs-fuse-connections.mount systemd-logind.service \

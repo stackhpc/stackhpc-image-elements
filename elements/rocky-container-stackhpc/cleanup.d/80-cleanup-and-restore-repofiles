@@ -11,7 +11,7 @@ DIB_ROCKY_CONTAINER_STACKHPC_RESTORE_UPSTREAM_REPOFILES=${DIB_ROCKY_CONTAINER_ST
 [ -n "$TARGET_ROOT" ]
 
 # Remove custom repo files
-if [ -d /tmp/orig_repos ]; then 
+if [ -d "${TARGET_ROOT}/tmp/orig_repos" ]; then 
   sudo rm -f ${TARGET_ROOT}/etc/yum.repos.d/*.repo
 fi
 

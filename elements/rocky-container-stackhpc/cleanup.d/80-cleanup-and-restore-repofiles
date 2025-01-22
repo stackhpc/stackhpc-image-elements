@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+DIB_ROCKY_CONTAINER_STACKHPC_RESTORE_UPSTREAM_REPOFILES=${DIB_ROCKY_CONTAINER_STACKHPC_RESTORE_UPSTREAM_REPOFILES:-"false"}
+
+[ -n "$TARGET_ROOT" ]
+
+# Remove custom repo files
+if [ -d "${TARGET_ROOT}/tmp/orig_repos" ]; then 
+  sudo rm -f ${TARGET_ROOT}/etc/yum.repos.d/*.repo
+fi
+
+# Conditionally restore upstream repo files
+if [[ ${DIB_ROCKY_CONTAINER_STACKHPC_RESTORE_UPSTREAM_REPOFILES} != "false" ]]; then
+  sudo cp -f ${TARGET_ROOT}/tmp/orig_repos/*.repo ${TARGET_ROOT}/etc/yum.repos.d/
+fi
+
+# Cleanup temporary copies of original repo files
+sudo rm -rf ${TARGET_ROOT}/tmp/orig_repos

@@ -11,7 +11,7 @@ RUN if [[ ${ROCKY_USE_CUSTOM_DNF_MIRRORS} != "false" ]]; then \
       for REPO_URL in $(echo ${ROCKY_CUSTOM_DNF_MIRROR_URLS} | sed 's/,/ /g'); do \
         dnf config-manager --add-repo ${REPO_URL}; \
       done && \
-      dnf --allowerasing -y distro-sync; \
+      dnf --allowerasing --exclude rocky-repos --exclude rocky-release -y distro-sync; \
     fi
 
 RUN dnf group install -y 'Minimal Install' --allowerasing && \

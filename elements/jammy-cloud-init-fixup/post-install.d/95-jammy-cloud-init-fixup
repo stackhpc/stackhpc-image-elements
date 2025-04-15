@@ -1,11 +1,32 @@
 #!/bin/bash
-
+# Exit immediately if a command exits with a non-zero status (-e),
+# treat unset variables as an error and exit immediately (-u),
+# and ensure that a pipeline fails if any part fails (-o pipefail).
 set -euo pipefail
 
-# Ensure that cloud-init-local requires /var/lib/cloud to be mounted
-cat > /etc/systemd/system/cloud-init-local.service <<EOF
+# Display a message indicating the purpose of the script
+echo "Creating systemd override for cloud-init-local.service to ensure it starts after /var is mounted"
+
+# Define the path to the systemd override directory
+OVERRIDE_DIR="/etc/systemd/system/cloud-init-local.service.d"
+
+# Create the override directory if it doesn't already exist
+mkdir -p "${OVERRIDE_DIR}"
+
+# Define the path to the override file
+OVERRIDE_FILE="${OVERRIDE_DIR}/override.conf"
+
+# Write the override configuration
+cat <<EOF >"${OVERRIDE_FILE}"
 [Unit]
+Requires=var.mount
+After=var.mount
 RequiresMountsFor=/var/lib/cloud
 EOF
 
-echo "Applied fixup for cloud-init-local"
+# Ensure correct permissions
+chmod 755 "${OVERRIDE_DIR}"
+chmod 644 "${OVERRIDE_FILE}"
+
+# Display a message indicating that the override has been created
+echo "Systemd override for cloud-init-local.service created successfully"

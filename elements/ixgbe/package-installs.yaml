@@ -1,0 +1,7 @@
+wget:
+rpm-build:
+elfutils-libelf-devel:
+kernel-abi-stablelists:
+kernel-devel:
+kernel-rpm-macros:
+kernel-headers:

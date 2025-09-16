@@ -17,7 +17,7 @@ RUN if [[ ${ROCKY_USE_CUSTOM_DNF_MIRRORS} != "false" ]]; then \
 RUN dnf group install -y 'Minimal Install' --allowerasing && \
     dnf install -y findutils util-linux cloud-init
 
-COPY <<EOF /etc/cloud/cloud.cfg.d/10-NetworkManager.cfg
+COPY <<-EOF /etc/cloud/cloud.cfg.d/10-NetworkManager.cfg
 ---
 system_info:
   activators:

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-1} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+if type dnf; then
+    curl -x "" -o /etc/pki/ca-trust/source/anchors/$CUSTOM_CA_CERTIFICATE_NAME $CUSTOM_CA_CERTIFICATE_URL
+    sudo update-ca-trust
+else
+    curl -x "" -o /usr/local/share/ca-certificates/$CUSTOM_CA_CERTIFICATE_NAME $CUSTOM_CA_CERTIFICATE_URL
+    sudo update-ca-certificates
+fi

@@ -1,0 +1,130 @@
+# syntax=docker/dockerfile:1.4.3
+
+# To build this image you need enable docker build kit. This is for the heredoc support.
+
+FROM docker.io/library/rockylinux:8
+
+ARG rocky_version=8.6
+
+# /etc/machine-id needs to be populated for /bin/kernel-install to
+# correctly copy kernels into /boot.  We will clear this out in the
+# final image.
+RUN systemd-machine-id-setup
+
+RUN curl -L https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Storage -o /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Storage\
+  && curl -L https://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox -o /etc/pki/rpm-gpg/RPM-GPG-KEY-Mellanox\
+  && curl -L https://download.docker.com/linux/centos/gpg -o /etc/pki/rpm-gpg/RPM-GPG-KEY-docker
+
+COPY <<Rocky-BaseOS.repo <<Rocky-Extras.repo <<Rocky-AppStream.repo <<Rocky-PowerTools.repo <<Rocky-NFV.repo <<ceph.repo <<docker.repo /etc/yum.repos.d/
+[baseos]
+name=Rocky Linux $releasever - BaseOS
+enabled=1
+baseurl=https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.6/BaseOS/x86_64/os/20220914T080246/
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+Rocky-BaseOS.repo
+[extras]
+name=Rocky Linux $releasever - Extras
+enabled=1
+baseurl=https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.6/extras/x86_64/os/20220904T041706/
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+Rocky-Extras.repo
+[appstream]
+name=Rocky Linux $releasever - AppStream
+enabled=1
+baseurl=https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.6/AppStream/x86_64/os/20220918T035853/
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+Rocky-AppStream.repo
+[powertools]
+name=Rocky Linux $releasever - PowerTools
+enabled=1
+baseurl=https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.6/PowerTools/x86_64/os/20220918T035853/
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+Rocky-PowerTools.repo
+[nfv]
+name=Rocky Linux $releasever - NFV
+enabled=1
+baseurl=https://pulp.128-232-222-245.sslip.io/pulp/content/rocky/8.6/nfv/x86_64/os/20220918T035853/
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+Rocky-NFV.repo
+[ceph]
+name=CentOS-$releasever - Ceph Nautilus
+enabled=1
+baseurl=https://pulp.128-232-222-245.sslip.io/pulp/content/centos/8/storage/x86_64/ceph-nautilus/20211122T102435/
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Storage
+ceph.repo
+[docker]
+name=docker-ce-for-centos-8-20211122T102435
+enabled=1
+baseurl=https://pulp.128-232-222-245.sslip.io/pulp/content/docker-ce/centos/8/x86_64/stable/20211122T102435/
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-docker
+docker.repo
+
+RUN dnf update -y --refresh
+
+# Install/remove packages from https://git.rockylinux.org/rocky/kickstarts/-/blob/r8/Rocky-8-GenericCloud.ks
+RUN dnf install -y @core --allowerasing
+RUN dnf install -y chrony dnf yum cloud-init cloud-utils-growpart NetworkManager \
+                dracut-config-generic dracut-norescue firewalld gdisk grub2 \
+                kernel nfs-utils rsync tar dnf-utils yum-utils \
+                python3-jsonschema qemu-guest-agent dhcp-client \
+                rocky-release rng-tools
+RUN dnf erase -y aic94xx-firmware alsa-firmware alsa-lib alsa-tools-firmware \
+              ivtv-firmware iwl100-firmware iwl1000-firmware iwl105-firmware \
+              iwl135-firmware iwl2000-firmware iwl2030-firmware iwl3160-firmware \
+              iwl3945-firmware iwl4965-firmware iwl5000-firmware iwl5150-firmware \
+              iwl6000-firmware iwl6000g2a-firmware iwl6000g2b-firmware iwl6050-firmware \
+              iwl7260-firmware libertas-sd8686-firmware libertas-sd8787-firmware \
+              libertas-usb8388-firmware biosdevname iprutils plymouth
+
+RUN dnf install -y cloud-init libvirt qemu-kvm ceph-common edk2-ovmf qemu-kvm-block-rbd cyrus-sasl docker-ce
+
+# From the base dib element
+RUN dnf install -y findutils util-linux sudo python3 NetworkManager
+
+RUN systemctl unmask console-getty.service dev-hugepages.mount \
+    getty.target sys-fs-fuse-connections.mount systemd-logind.service \
+    systemd-remount-fs.service
+
+RUN curl -L https://www.mellanox.com/downloads/ofed/MLNX_OFED-5.7-1.0.2.0/MLNX_OFED_SRC-5.7-1.0.2.0.tgz --output /tmp/MLNX_OFED_SRC-5.7-1.0.2.0.tgz \
+  && cd /tmp \
+  && tar -xzf MLNX_OFED_SRC-5.7-1.0.2.0.tgz \
+  && dnf install -y perl cmake kernel-devel python36-devel perl-generators python36 python3-Cython rpm-build elfutils-libelf-devel zlib-devel gcc-c++ gdb-headless glib2-devel patch lsof libmnl-devel openssl-devel pciutils-devel pkgconf-pkg-config libstdc++-devel libnl3-devel libtool python3-docutils numactl-devel systemd-devel kernel-rpm-macros glibc-devel pciutils gcc valgrind-devel \
+  && /tmp/MLNX_OFED_SRC-5.7-1.0.2.0/install.pl --hypervisor --kernel 4.18.0-372.26.1.el8_6.x86_64 \
+  && rm -rf /tmp/MLNX_OFED_SRC-5.7-1.0.2.0*
+
+# Workaround for: Unable to find a system nic for <MAC_ADDRESS> from cloud-init
+# https://askubuntu.com/questions/1400527/unable-to-find-a-system-nic-while-running-cloud-init
+COPY <<delay.conf /etc/systemd/system/cloud-init-local.service.d
+[Service]
+ExecStartPre=sleep 30
+delay.conf
+
+# Add hack because perftest in mofed conflicts and is older than rocky 8.6 version
+RUN dnf install python3-dnf-plugin-versionlock -y
+RUN dnf versionlock add "perftest-0:4.5-0.17.g6f25f23.57102.*"
+
+# Add support for MPTSAS raid controllers. This kernel module was included in
+# CentOS 7.  We now need an alternative source. Don't leave elrepo installed
+# to avoid installing other packages of unknown providence.
+RUN rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org \
+  && dnf install -y https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm \
+  && dnf versionlock add "kmod-mpt3sas-39.100.00.00-1.el8_6.elrepo.x86_64" \
+  && dnf install -y kmod-mpt3sas \
+  && dnf remove -y elrepo-release.noarch
+
+# DIB will do this, but run it here to test we are good
+RUN dnf update -y

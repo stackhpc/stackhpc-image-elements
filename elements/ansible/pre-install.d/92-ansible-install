@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+mkdir -p "$DIB_ANSIBLE_VENV"
+
+/usr/bin/python3 -m venv "$DIB_ANSIBLE_VENV"
+"$DIB_ANSIBLE_VENV/bin/pip" install -U pip
+"$DIB_ANSIBLE_VENV/bin/pip" install "$DIB_ANSIBLE_PKG"

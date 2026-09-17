@@ -6,6 +6,6 @@ fi
 set -eu
 set -o pipefail
 
-IPA_VENV=/usr/share/ironic-python-agent/venv
+IPA_VENV=/opt/ironic-python-agent
 
-$IPA_VENV/bin/pip install git+https://github.com/stackhpc/stackhpc-ipa-hardware-managers.git@${DIB_IPA_STACKHPC_IPA_HARDWARE_MANAGERS_BRANCH:-master}
+$IPA_VENV/bin/pip install ${DIB_IPA_STACKHPC_IPA_HARDWARE_MANAGERS_REPO:-git+https://github.com/stackhpc/stackhpc-ipa-hardware-managers.git}@${DIB_IPA_STACKHPC_IPA_HARDWARE_MANAGERS_BRANCH:-master}

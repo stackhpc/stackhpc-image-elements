@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+wget https://github.com/intel/ethernet-linux-ixgbe/releases/download/v6.1.5/ixgbe-6.1.5.tar.gz
+
+export ARCH=x86
+
+export BUILD_KERNEL=$DIB_IXGBE_BUILD_KERNEL
+
+rpmbuild -tb ixgbe-6.1.5.tar.gz
+
+dnf localinstall -y /root/rpmbuild/RPMS/x86_64/ixgbe-6.1.5-1.x86_64.rpm

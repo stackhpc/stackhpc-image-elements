@@ -1,0 +1,15 @@
+[Unit]
+Description=Ironic Python Agent
+After=network-online.target
+ConditionPathExists=!/etc/.rescued
+
+[Service]
+ExecStartPre=/sbin/modprobe vfat
+ExecStartPre=echo "Delaying IPA"
+ExecStartPre=sleep IPA_DELAY_START_SED_TARGET
+ExecStart=/usr/local/bin/ironic-python-agent --config-dir /etc/ironic-python-agent.d/
+Restart=always
+RestartSec=30s
+
+[Install]
+WantedBy=multi-user.target

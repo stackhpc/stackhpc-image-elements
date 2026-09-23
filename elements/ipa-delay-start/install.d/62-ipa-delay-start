@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+case "$DIB_INIT_SYSTEM" in
+    systemd)
+        # install -D -g root -o root -m 0644 /tmp/in_target.d/ironic-python-agent-delay.service /etc/systemd/system/ironic-python-agent-delay.service
+        # install -D -g root -o root -m 0644 /tmp/in_target.d/local.conf /usr/lib/systemd/system/ironic-python-agent.service.d/local.conf
+        # mkdir /etc/systemd/system/ironic-python-agent.service.d
+        # cp /tmp/in_target.d/local.conf /etc/systemd/system/ironic-python-agent.service.d/local.conf
+        install -D -g root -o root -m 0644 /tmp/in_target.d/ironic-python-agent.service /usr/lib/systemd/system/ironic-python-agent.service
+        ;;
+    *)
+        echo "Unsupported init system"
+        exit 1
+        ;;
+esac

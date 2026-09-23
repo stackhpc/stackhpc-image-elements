@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+SCRIPTDIR=$(dirname $0)
+
+# sed s/IPA_DELAY_START_SED_TARGET/${IPA_DELAY_START_SECS}/ ${SCRIPTDIR}/ironic-python-agent-delay-source.service > ${TMP_HOOKS_PATH}/ironic-python-agent-delay.service
+# sed s/IPA_DELAY_START_SED_TARGET/${IPA_DELAY_START_SECS}/ ${SCRIPTDIR}/local-source.conf > ${TMP_HOOKS_PATH}/local.conf
+sed s/IPA_DELAY_START_SED_TARGET/${IPA_DELAY_START_SECS}/ ${SCRIPTDIR}/ironic-python-agent-source.service > ${TMP_HOOKS_PATH}/ironic-python-agent.service

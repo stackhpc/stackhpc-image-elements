@@ -1,0 +1,3 @@
+#!/bin/bash
+
+export IPA_DELAY_START_SECS=${DIB_IPA_DELAY_START_SECS:-10}

@@ -1,0 +1,14 @@
+[Unit]
+DefaultDependencies=no
+After=network-online.target
+Before=ironic-python-agent.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=echo "Delaying IPA" 
+ExecStart=sleep IPA_DELAY_START_SED_TARGET
+ExecStartPost=echo "Finished delaying IPA" 
+
+[Install]
+WantedBy=multi-user.target

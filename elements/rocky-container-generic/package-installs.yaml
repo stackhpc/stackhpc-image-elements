@@ -1,0 +1,73 @@
+# List taken from https://git.rockylinux.org/rocky/kickstarts/-/blob/r8/Rocky-8-GenericCloud.ks
+
+chrony:
+dnf:
+yum:
+cloud-init:
+cloud-utils-growpart:
+NetworkManager:
+dracut-config-generic:
+firewalld:
+gdisk:
+grub2:
+kernel:
+nfs-utils:
+rsync:
+tar:
+dnf-utils:
+yum-utils:
+python3-jsonschema:
+qemu-guest-agent:
+dhcp-client:
+rocky-release:
+rng-tools:
+aic94xx-firmware:
+  uninstall: true
+alsa-firmware:
+  uninstall: true
+alsa-lib:
+  uninstall: true
+alsa-tools-firmware:
+  uninstall: true
+ivtv-firmware:
+  uninstall: true
+iwl100-firmware:
+  uninstall: true
+iwl1000-firmware:
+  uninstall: true
+iwl105-firmware:
+  uninstall: true
+iwl135-firmware:
+  uninstall: true
+iwl2000-firmware:
+  uninstall: true
+iwl2030-firmware:
+  uninstall: true
+iwl3160-firmware:
+  uninstall: true
+iwl3945-firmware:
+  uninstall: true
+iwl4965-firmware:
+  uninstall: true
+iwl5000-firmware:
+  uninstall: true
+iwl5150-firmware:
+  uninstall: true
+iwl6000-firmware:
+  uninstall: true
+iwl6000g2a-firmware:
+  uninstall: true
+iwl6000g2b-firmware:
+  uninstall: true
+iwl6050-firmware:
+  uninstall: true
+iwl7260-firmware:
+  uninstall: true
+libertas-sd8686-firmware:
+  uninstall: true
+libertas-sd8787-firmware:
+  uninstall: true
+libertas-usb8388-firmware:
+  uninstall: true
+plymouth:
+  uninstall: true
